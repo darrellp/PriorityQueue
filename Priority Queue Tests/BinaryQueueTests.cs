@@ -1,0 +1,63 @@
+﻿using System;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Priority_Queue;
+
+namespace Priority_Queue_Tests
+{
+	[TestClass]
+	public class BinaryQueueTests
+	{
+		[TestMethod]
+		public void TestCreation()
+		{
+			Assert.IsNotNull(new BinaryPriorityQueue<int>());
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(IndexOutOfRangeException))]
+		public void TestPeekException()
+		{
+			(new BinaryPriorityQueue<int>()).Peek();
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(IndexOutOfRangeException))]
+		public void TestPopException()
+		{
+			(new BinaryPriorityQueue<int>()).Pop();
+		}
+
+		[TestMethod]
+		public void TestPq()
+		{
+			// ReSharper disable once UseObjectOrCollectionInitializer
+			var pq = new BinaryPriorityQueue<int>();
+
+			pq.Add(80);
+			Assert.AreEqual(80, pq.Peek());
+			pq.Add(90);
+			Assert.AreEqual(2, pq.Count);
+			Assert.AreEqual(90, pq.Peek());
+			Assert.AreEqual(90, pq.Pop());
+			Assert.AreEqual(80, pq.Peek());
+			pq.Add(30);
+			pq.Add(90);
+			pq.Add(85);
+			pq.Add(20);
+			Assert.AreEqual(5, pq.Count);
+			Assert.AreEqual(90, pq.Pop());
+			Assert.AreEqual(85, pq.Pop());
+			Assert.AreEqual(3, pq.Count);
+			pq.Add(50);
+			pq.Add(35);
+			Assert.AreEqual(5, pq.Count);
+			Assert.AreEqual(80, pq.Pop());
+			Assert.AreEqual(50, pq.Pop());
+			Assert.AreEqual(35, pq.Pop());
+			Assert.AreEqual(30, pq.Pop());
+			Assert.AreEqual(20, pq.Pop());
+			Assert.AreEqual(0, pq.Count);
+		}
+	}
+}

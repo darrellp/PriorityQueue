@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Priority Queue", "Priority Queue\Priority Queue.csproj", "{D2E04FB6-D9D4-44B1-B8FD-9336EBA0C799}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Priority Queue Tests", "Priority Queue Tests\Priority Queue Tests.csproj", "{4E248BE1-E449-4972-8E1F-D4C4085CF8AF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D2E04FB6-D9D4-44B1-B8FD-9336EBA0C799}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2E04FB6-D9D4-44B1-B8FD-9336EBA0C799}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2E04FB6-D9D4-44B1-B8FD-9336EBA0C799}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2E04FB6-D9D4-44B1-B8FD-9336EBA0C799}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E248BE1-E449-4972-8E1F-D4C4085CF8AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E248BE1-E449-4972-8E1F-D4C4085CF8AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E248BE1-E449-4972-8E1F-D4C4085CF8AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E248BE1-E449-4972-8E1F-D4C4085CF8AF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		VisualSVNWorkingCopyRoot = .
+	EndGlobalSection
+EndGlobal
