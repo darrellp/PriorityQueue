@@ -11,14 +11,23 @@ namespace Priority_Queue_Tests
 		[TestMethod]
 		public void TestCreation()
 		{
-			//Assert.IsNotNull(new FibonacciPriorityQueue<FibonacciElementWrapper<int>>());
+			Assert.IsNotNull(new FibonacciPriorityQueue<int>());
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(IndexOutOfRangeException))]
-		public void TestPeekException()
+		public void TestPeek()
 		{
-			//(new FibonacciPriorityQueue<FibonacciElementWrapper<int>>()).Peek();
+			var fpq = new FibonacciPriorityQueue<int>();
+			var val = fpq.Peek();
+			Assert.AreEqual(default(int), val);
+			bool fNoMin;
+			val = fpq.Peek(out fNoMin);
+			Assert.IsTrue(fNoMin);
+			Assert.AreEqual(default(int), val);
+			fpq.Add(13);
+			val = fpq.Peek(out fNoMin);
+			Assert.IsFalse(fNoMin);
+			Assert.AreEqual(13, val);
 		}
 	}
 }

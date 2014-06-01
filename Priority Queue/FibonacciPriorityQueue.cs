@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Priority_Queue
 {
-	public class FibonacciPriorityQueue	<TPQ> : IEnumerable<TPQ> where TPQ : class, IFibonacciQueueElement<TPQ> 
+	public class FibonacciPriorityQueue<TPQ> : IEnumerable<TPQ> where TPQ : IComparable
 	{
 		#region Private Variables
 		private IFibonacciQueueElement<TPQ> _min;
@@ -120,12 +120,12 @@ namespace Priority_Queue
 		#region Priority Queue Operations
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>
-		///  Insert a value into the priority queue.
+		///  Insert an IFibonacciQueueElement value into the priority queue.
 		/// </summary>
 		/// <remarks>	Darrellp, 2/17/2011.	</remarks>
 		/// <param name="val">Value to insert.</param>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		public void Add(TPQ val)
+		public void Add(IFibonacciQueueElement<TPQ> val)
 		{
 			if (val == null)
 			{
@@ -153,6 +153,18 @@ namespace Priority_Queue
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>
+		///  Insert a value into the priority queue of type TPQ.
+		/// </summary>
+		/// <remarks>	Darrellp, 2/17/2011.	</remarks>
+		/// <param name="attr">Value to insert.</param>
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		public void Add(TPQ attr)
+		{
+			Add(new FibonacciElementWrapper<TPQ>(attr));
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>
 		///  Unions the specified heap with our heap and returns the result.
 		/// </summary>
 		/// <remarks>	Both original heaps are destroyed	</remarks>
@@ -174,29 +186,54 @@ namespace Priority_Queue
 			return ret;
 		}
 
-		public IFibonacciQueueElement<TPQ> ExtractMin()
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>
+		///  Extracts and deletes the minimum value from the priority queue.
+		/// </summary>
+		/// <remarks>	Darrellp - 6/1/14	</remarks>
+		/// <param name="fNoMin">No current minimum if set to <c>true</c>.</param>
+		/// <returns> Minimum value of type TPQ.</returns>
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		public TPQ ExtractMin(out bool fNoMin)
 		{
 			var ret = _min;
-			if (ret != null)
+			if (_min == null)
 			{
-				foreach (var child in EnumerateLinkedList(_min.FirstChild))
-				{
-					child.Parent = null;
-				}
-				CombineLists(_min, _min.FirstChild);
-				if (IsSingleTon(_min))
-				{
-					_min = null;
-				}
-				else
-				{
-					_min = _min.RightSibling;
-					Consolidate();
-				}
-				RemoveFromList(ret);
-				Count--;
+				fNoMin = true;
+				return default(TPQ);
 			}
-			return ret;
+
+			fNoMin = false;
+			foreach (var child in EnumerateLinkedList(_min.FirstChild))
+			{
+				child.Parent = null;
+			}
+			CombineLists(_min, _min.FirstChild);
+			if (IsSingleTon(_min))
+			{
+				_min = null;
+			}
+			else
+			{
+				_min = _min.RightSibling;
+				Consolidate();
+			}
+			RemoveFromList(ret);
+			Count--;
+			return ret == null? default(TPQ) : ret.Attr;
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>
+		///  Extracts and deletes the minimum value from the priority queue.
+		/// </summary>
+		/// <remarks>	Darrellp - 6/1/14	</remarks>
+		/// <returns> Minimum value of type TPQ - TPQ's default if there is no current minimum.</returns>
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		public TPQ ExtractMin()
+		{
+			bool fNoMin;
+			return ExtractMin(out fNoMin);
 		}
 
 		private void Consolidate()
@@ -209,19 +246,27 @@ namespace Priority_Queue
 		///  Peeks at the min element without deleting it.
 		/// </summary>
 		/// <remarks>	Darrellp - 6/1/14	</remarks>
-		/// <returns>Smallest element in queue.</returns>
+		/// <param name="fNoMin">No minimum if set to <c>true</c>.</param>
+		/// <returns>Smallest element in queue or default(TPQ) if no smallest element.</returns>
 		/// <exception cref="System.IndexOutOfRangeException">Peeking at an empty priority queue</exception>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		public IFibonacciQueueElement<TPQ> Peek()
+		public TPQ Peek(out bool fNoMin)
 		{
-			// If there are no elements to peek
-			if (_min == null)
-			{
-				// Throw an exception
-				throw new IndexOutOfRangeException("Peeking at an empty priority queue");
-			}
+			fNoMin = _min == null;
+			return fNoMin ? default(TPQ) : _min.Attr;
+		}
 
-			return _min;
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>
+		///  Peeks at the min element without deleting it.
+		/// </summary>
+		/// <remarks> This is just a convenience routine  - Darrellp - 6/1/14	</remarks>
+		/// <returns>Smallest element in queue or default(TPQ) if no smallest element.</returns>
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		public TPQ Peek()
+		{
+			bool fNoMin;
+			return Peek(out fNoMin);
 		}
 		#endregion
 
