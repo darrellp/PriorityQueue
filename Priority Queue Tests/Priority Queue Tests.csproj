@@ -53,6 +53,7 @@
     <Compile Include="BinaryQueueTests.cs" />
     <Compile Include="BinaryQueueWithDeletionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="FibonacciQueueTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Priority Queue\Priority Queue.csproj">
