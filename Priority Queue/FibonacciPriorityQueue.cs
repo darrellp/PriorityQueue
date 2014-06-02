@@ -103,17 +103,76 @@ namespace Priority_Queue
 			} while (!ReferenceEquals(cur, list));
 		}
 
-		private static IFibonacciQueueElement<TPQ> RemoveFromList(IFibonacciQueueElement<TPQ> element)
+		private static void RemoveFromList(IFibonacciQueueElement<TPQ> element)
 		{
 			if (IsSingletonOrUnattached(element))
 			{
 				// If we are not on a list or on a singleton list, there's nothing to do;
-				return element;
+				return;
 			}
 			element.LeftSibling.RightSibling = element.RightSibling;
 			element.RightSibling.LeftSibling = element.RightSibling;
-			element.LeftSibling = element.RightSibling = null;
-			return element;
+
+			// Turn element into a singleton list
+			element.LeftSibling = element.RightSibling = element;
+			return;
+		}
+
+		private void Consolidate()
+		{
+			var degreeToRoot = new IFibonacciQueueElement<TPQ>[64];
+			var rootList = EnumerateLinkedList(_min).ToList();
+
+			foreach (var element in rootList)
+			{
+				var smallerRoot = element;
+				var curDegree = element.Degree;
+				while (degreeToRoot[curDegree] != null)
+				{
+					smallerRoot = element;
+					var largerRoot = degreeToRoot[curDegree];
+					if (smallerRoot.CompareTo(largerRoot) > 0)
+					{
+						smallerRoot = degreeToRoot[curDegree];
+						largerRoot = element;
+					}
+					degreeToRoot[curDegree] = null;
+					HeapLink(largerRoot, smallerRoot);
+					curDegree++;
+				}
+				degreeToRoot[curDegree] = smallerRoot;
+			}
+			_min = null;
+			foreach (var root in degreeToRoot.Where(elm => elm != null))
+			{
+				if (_min == null)
+				{
+					_min = root;
+				}
+				else
+				{
+					CombineLists(_min, root);
+					if (root.Attr.CompareTo(_min.Attr) < 0)
+					{
+						_min = root;
+					}
+				}
+			}
+		}
+
+		private void HeapLink(IFibonacciQueueElement<TPQ> newChild, IFibonacciQueueElement<TPQ> newParent)
+		{
+			RemoveFromList(newChild);
+			if (newParent.FirstChild == null)
+			{
+				newParent.FirstChild = newChild;
+			}
+			else
+			{
+				CombineLists(newParent.FirstChild, newChild);
+			}
+			newParent.Degree++;
+			newChild.Marked = false;
 		}
 		#endregion
 
@@ -125,16 +184,8 @@ namespace Priority_Queue
 		/// <remarks>	Darrellp, 2/17/2011.	</remarks>
 		/// <param name="val">Value to insert.</param>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		public void Add(IFibonacciQueueElement<TPQ> val)
+		private void Add(IFibonacciQueueElement<TPQ> val)
 		{
-			if (val == null)
-			{
-				throw new ArgumentNullException("null val in FibonacciPriorityQueue<TPQ>.Add()");
-			}
-			val.Degree = 0;
-			val.FirstChild = null;
-			val.Marked = false;
-			val.Parent = null;
 			if (_min == null)
 			{
 				_min = val;
@@ -209,16 +260,18 @@ namespace Priority_Queue
 				child.Parent = null;
 			}
 			CombineLists(_min, _min.FirstChild);
-			if (IsSingleTon(_min))
+			var newMin = _min.RightSibling;
+			var fSingletonMin = IsSingleTon(_min);
+			RemoveFromList(_min);
+			if (fSingletonMin)
 			{
 				_min = null;
 			}
 			else
 			{
-				_min = _min.RightSibling;
+				_min = newMin;
 				Consolidate();
 			}
-			RemoveFromList(ret);
 			Count--;
 			return ret == null? default(TPQ) : ret.Attr;
 		}
@@ -234,11 +287,6 @@ namespace Priority_Queue
 		{
 			bool fNoMin;
 			return ExtractMin(out fNoMin);
-		}
-
-		private void Consolidate()
-		{
-			throw new NotImplementedException();
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Priority_Queue;
-using fWrap = Priority_Queue.FibonacciElementWrapper<int>;
 
 namespace Priority_Queue_Tests
 {
@@ -28,6 +27,15 @@ namespace Priority_Queue_Tests
 			val = fpq.Peek(out fNoMin);
 			Assert.IsFalse(fNoMin);
 			Assert.AreEqual(13, val);
+			fpq.Add(10);
+			Assert.AreEqual(10, fpq.Peek());
+			fpq.Add(11);
+			Assert.AreEqual(10, fpq.Peek());
+			Assert.AreEqual(10, fpq.ExtractMin());
+			Assert.AreEqual(11, fpq.ExtractMin());
+			Assert.AreEqual(13, fpq.ExtractMin());
+			Assert.AreEqual(default(int), fpq.ExtractMin(out fNoMin));
+			Assert.IsTrue(fNoMin);
 		}
 	}
 }

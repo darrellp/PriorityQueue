@@ -2,7 +2,7 @@
 
 namespace Priority_Queue
 {
-	public class FibonacciElementWrapper<TPQ> : IFibonacciQueueElement<TPQ> where TPQ : IComparable
+	internal class FibonacciElementWrapper<TPQ> : IFibonacciQueueElement<TPQ> where TPQ : IComparable
 	{
 		public TPQ Attr { get; private set; }
 		public IFibonacciQueueElement<TPQ> FirstChild { get; set; }
@@ -15,6 +15,11 @@ namespace Priority_Queue
 		public FibonacciElementWrapper(TPQ attr)
 		{
 			Attr = attr;
+			Degree = 0;
+			FirstChild = null;
+			Marked = false;
+			Parent = null;
+			LeftSibling = RightSibling = this;
 		}
 
 		public int CompareTo(object obj)
