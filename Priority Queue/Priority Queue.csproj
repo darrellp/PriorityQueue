@@ -44,7 +44,6 @@
     <Compile Include="FibonacciElementWrapper.cs" />
     <Compile Include="FibonacciPriorityQueue.cs" />
     <Compile Include="IBinaryQueueElement.cs" />
-    <Compile Include="IFibonacciQueueElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

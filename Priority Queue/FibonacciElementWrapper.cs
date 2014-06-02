@@ -2,13 +2,13 @@
 
 namespace Priority_Queue
 {
-	internal class FibonacciElementWrapper<TPQ> : IFibonacciQueueElement<TPQ> where TPQ : IComparable
+	internal class FibonacciElementWrapper<TPQ> where TPQ : IComparable
 	{
 		public TPQ Attr { get; private set; }
-		public IFibonacciQueueElement<TPQ> FirstChild { get; set; }
-		public IFibonacciQueueElement<TPQ> Parent { get; set; }
-		public IFibonacciQueueElement<TPQ> LeftSibling { get; set; }
-		public IFibonacciQueueElement<TPQ> RightSibling { get; set; }
+		public FibonacciElementWrapper<TPQ> FirstChild { get; set; }
+		public FibonacciElementWrapper<TPQ> Parent { get; set; }
+		public FibonacciElementWrapper<TPQ> LeftSibling { get; set; }
+		public FibonacciElementWrapper<TPQ> RightSibling { get; set; }
 		public int Degree { get; set; }
 		public bool Marked { get; set; }
 

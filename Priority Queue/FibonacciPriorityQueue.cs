@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Priority_Queue
@@ -8,7 +9,7 @@ namespace Priority_Queue
 	public class FibonacciPriorityQueue<TPQ> : IEnumerable<TPQ> where TPQ : IComparable
 	{
 		#region Private Variables
-		private IFibonacciQueueElement<TPQ> _min;
+		private FibonacciElementWrapper<TPQ> _min;
 		#endregion
 
 		#region Properties
@@ -26,44 +27,17 @@ namespace Priority_Queue
 		#endregion
 
 		#region Utility functions
-		static bool IsSingleTon(IFibonacciQueueElement<TPQ> element)
+		static bool IsSingleTon(FibonacciElementWrapper<TPQ> element)
 		{
 			return ReferenceEquals(element, element.RightSibling);
 		}
 
-		static bool IsSingletonOrUnattached(IFibonacciQueueElement<TPQ> element)
+		static bool IsSingletonOrUnattached(FibonacciElementWrapper<TPQ> element)
 		{
 			return element.RightSibling == null || IsSingleTon(element);
 		}
 
-		static void MoveElement(IFibonacciQueueElement<TPQ> element, IFibonacciQueueElement<TPQ> to)
-		{
-			if (element == null)
-			{
-				throw new ArgumentException("element is null in MoveElement");
-			}
-			if (!IsSingletonOrUnattached(element))
-			{
-				// If it's already linked into another (non-singleton) list, unlink it
-				element.LeftSibling.RightSibling = element.RightSibling;
-				element.RightSibling.LeftSibling = element.LeftSibling;
-			}
-			if (to == null)
-			{
-				// If there's no list to link into, make element a singleton list
-				element.LeftSibling = element.RightSibling = element;
-			}
-			else
-			{
-				// Standard link into non-null list
-				element.LeftSibling = to;
-				element.RightSibling = to.RightSibling;
-				to.RightSibling.LeftSibling = element;
-				to.RightSibling = element;
-			}
-		}
-
-		static IFibonacciQueueElement<TPQ> CombineLists(IFibonacciQueueElement<TPQ> list1, IFibonacciQueueElement<TPQ> list2)
+		static FibonacciElementWrapper<TPQ> CombineLists(FibonacciElementWrapper<TPQ> list1, FibonacciElementWrapper<TPQ> list2)
 		{
 			if (list1 == null)
 			{
@@ -79,10 +53,11 @@ namespace Priority_Queue
 			list2.RightSibling.LeftSibling = list1;
 			list1Next.LeftSibling = list2;
 			list2.RightSibling = list1Next;
+			ThrowBadList(list1);
 			return list1;
 		}
 
-		static IEnumerable<IFibonacciQueueElement<TPQ>> EnumerateLinkedList(IFibonacciQueueElement<TPQ> list)
+		static IEnumerable<FibonacciElementWrapper<TPQ>> EnumerateLinkedList(FibonacciElementWrapper<TPQ> list)
 		{
 			if (list == null)
 			{
@@ -103,24 +78,26 @@ namespace Priority_Queue
 			} while (!ReferenceEquals(cur, list));
 		}
 
-		private static void RemoveFromList(IFibonacciQueueElement<TPQ> element)
+		private static FibonacciElementWrapper<TPQ> RemoveFromList(FibonacciElementWrapper<TPQ> element)
 		{
 			if (IsSingletonOrUnattached(element))
 			{
 				// If we are not on a list or on a singleton list, there's nothing to do;
-				return;
+				return element;
 			}
+			var oldList = element.LeftSibling;
 			element.LeftSibling.RightSibling = element.RightSibling;
-			element.RightSibling.LeftSibling = element.RightSibling;
+			element.RightSibling.LeftSibling = element.LeftSibling;
 
 			// Turn element into a singleton list
 			element.LeftSibling = element.RightSibling = element;
-			return;
+			ThrowBadList(oldList);
+			return element;
 		}
 
 		private void Consolidate()
 		{
-			var degreeToRoot = new IFibonacciQueueElement<TPQ>[64];
+			var degreeToRoot = new FibonacciElementWrapper<TPQ>[64];
 			var rootList = EnumerateLinkedList(_min).ToList();
 
 			foreach (var element in rootList)
@@ -129,21 +106,21 @@ namespace Priority_Queue
 				var curDegree = element.Degree;
 				while (degreeToRoot[curDegree] != null)
 				{
-					smallerRoot = element;
 					var largerRoot = degreeToRoot[curDegree];
 					if (smallerRoot.CompareTo(largerRoot) > 0)
 					{
-						smallerRoot = degreeToRoot[curDegree];
-						largerRoot = element;
+						var swapT = smallerRoot;
+						smallerRoot = largerRoot;
+						largerRoot = swapT;
 					}
-					degreeToRoot[curDegree] = null;
 					HeapLink(largerRoot, smallerRoot);
+					degreeToRoot[curDegree] = null;
 					curDegree++;
 				}
 				degreeToRoot[curDegree] = smallerRoot;
 			}
 			_min = null;
-			foreach (var root in degreeToRoot.Where(elm => elm != null))
+			foreach (var root in degreeToRoot.Where(elm => elm != null).Select(RemoveFromList))
 			{
 				if (_min == null)
 				{
@@ -160,7 +137,7 @@ namespace Priority_Queue
 			}
 		}
 
-		private void HeapLink(IFibonacciQueueElement<TPQ> newChild, IFibonacciQueueElement<TPQ> newParent)
+		private void HeapLink(FibonacciElementWrapper<TPQ> newChild, FibonacciElementWrapper<TPQ> newParent)
 		{
 			RemoveFromList(newChild);
 			if (newParent.FirstChild == null)
@@ -174,17 +151,132 @@ namespace Priority_Queue
 			newParent.Degree++;
 			newChild.Marked = false;
 		}
+
+		[Conditional("DEBUG")]
+		private static void ThrowBadList(FibonacciElementWrapper<TPQ> list)
+		{
+			if (!IsLinkedListValid(list))
+			{
+				throw new InvalidOperationException("Bad list");
+			}
+		}
+
+		[Conditional("DEBUG")]
+		private static void ThrowBadFpq(FibonacciPriorityQueue<TPQ> fpq)
+		{
+			if (!fpq.Validate())
+			{
+				throw new InvalidOperationException("Bad Fibonacci Priority Queue");
+			}
+		}
+
+		// Providing this as a place to set a breakpoint
+		static bool False()
+		{
+			return false;
+		}
+
+		private static bool IsParentValid(FibonacciElementWrapper<TPQ> parent)
+		{
+			if (parent == null)
+			{
+				return true;
+			}
+			_elementCount++;
+			if (!IsLinkedListValid(parent.FirstChild))
+			{
+				return False();
+			}
+
+			return EnumerateLinkedList(parent.FirstChild).All(IsParentValid) || False();
+		}
+
+		// ReSharper disable once StaticFieldInGenericType
+		private static int _elementCount;
+
+		public bool Validate()
+		{
+			_elementCount = 0;
+			if (!IsLinkedListValid(_min))
+			{
+				return False();
+			}
+			if (EnumerateLinkedList(_min).Any(parent => !IsParentValid(parent)))
+			{
+				return False();
+			}
+			if (_elementCount != Count)
+			{
+				return False();
+			}
+			return true;
+		}
+
+		private static bool IsLinkedListValid(FibonacciElementWrapper<TPQ> list)
+		{
+			if (list == null)
+			{
+				return true;
+			}
+			var cur = list;
+			var nextSibling = list.RightSibling;
+
+			var vals = new HashSet<FibonacciElementWrapper<TPQ>>();
+			while (true)
+			{
+				if (vals.Contains(cur))
+				{
+					if (cur != list)
+					{
+						return False();
+					}
+					break;
+				}
+				vals.Add(cur);
+
+				cur = nextSibling;
+				if (nextSibling == null)
+				{
+					return False();
+				}
+				nextSibling = nextSibling.RightSibling;
+			}
+			var count = vals.Count;
+			vals.Clear();
+			cur = list;
+			nextSibling = list.LeftSibling;
+			while (true)
+			{
+				if (vals.Contains(cur))
+				{
+					if (cur != list)
+					{
+						return False();
+					}
+					break;
+				}
+				vals.Add(cur);
+
+				cur = nextSibling;
+				if (nextSibling == null)
+				{
+					return False();
+				}
+				nextSibling = nextSibling.LeftSibling;
+			}
+			return vals.Count == count;
+		}
 		#endregion
 
 		#region Priority Queue Operations
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>
-		///  Insert an IFibonacciQueueElement value into the priority queue.
+		///  Insert an FibonacciElementWrapper value into the priority queue.
 		/// </summary>
 		/// <remarks>	Darrellp, 2/17/2011.	</remarks>
 		/// <param name="val">Value to insert.</param>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		private void Add(IFibonacciQueueElement<TPQ> val)
+		private void Add(FibonacciElementWrapper<TPQ> val)
 		{
 			if (_min == null)
 			{
@@ -193,7 +285,8 @@ namespace Priority_Queue
 			}
 			else
 			{
-				MoveElement(val, _min);
+				//MoveElement(val, _min);
+				CombineLists(_min, val);
 				if (val.CompareTo(_min) < 0)
 				{
 					_min = val;
@@ -286,7 +379,9 @@ namespace Priority_Queue
 		public TPQ ExtractMin()
 		{
 			bool fNoMin;
-			return ExtractMin(out fNoMin);
+			var ret = ExtractMin(out fNoMin);
+			ThrowBadFpq(this);
+			return ret;
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
