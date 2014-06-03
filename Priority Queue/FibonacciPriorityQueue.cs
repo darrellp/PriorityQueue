@@ -303,7 +303,7 @@ namespace Priority_Queue
 		/// <param name="fNoMin">No current minimum if set to <c>true</c>.</param>
 		/// <returns> Minimum value of type TPQ.</returns>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		public TPQ ExtractMin(out bool fNoMin)
+		public TPQ Pop(out bool fNoMin)
 		{
 			var ret = _min;
 			if (_min == null)
@@ -341,10 +341,10 @@ namespace Priority_Queue
 		/// <remarks>	Darrellp - 6/1/14	</remarks>
 		/// <returns> Minimum value of type TPQ - TPQ's default if there is no current minimum.</returns>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		public TPQ ExtractMin()
+		public TPQ Pop()
 		{
 			bool fNoMin;
-			var ret = ExtractMin(out fNoMin);
+			var ret = Pop(out fNoMin);
 			ThrowBadFpq(this);
 			return ret;
 		}
@@ -442,7 +442,7 @@ namespace Priority_Queue
 			}
 			element.InfinitelyNegative = true;
 			PlaceElement(element);
-			ExtractMin();
+			Pop();
 		}
 		#endregion
 

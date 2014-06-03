@@ -295,7 +295,7 @@ namespace Priority_Queue
 		protected void UpHeap(int i)
 		{
 			// While we're not the root and our parent is smaller than we are
-			while (i > 0 && ArrayVal(i).CompareTo(Parent(i)) > 0)
+			while (i > 0 && ArrayVal(i).CompareTo(Parent(i)) < 0)
 			{
 				// Swap us with our parents
 				Swap(i, ParentIndex(i));
@@ -320,13 +320,13 @@ namespace Priority_Queue
 				var iContinue = -1;
 
 				// If we have a right son and he is larger than us
-				if (RightSonExists(i) && Right(i).CompareTo(ArrayVal(i)) > 0)
+				if (RightSonExists(i) && Right(i).CompareTo(ArrayVal(i)) < 0)
 				{
 					// Arrange to swap us with the larger of our two children
-					iContinue = Left(i).CompareTo(Right(i)) < 0 ? RightChildIndex(i) : LeftChildIndex(i);
+					iContinue = Left(i).CompareTo(Right(i)) > 0 ? RightChildIndex(i) : LeftChildIndex(i);
 				}
 				// Else if we have a left son and he is larger than us
-				else if (LeftSonExists(i) && Left(i).CompareTo(ArrayVal(i)) > 0)
+				else if (LeftSonExists(i) && Left(i).CompareTo(ArrayVal(i)) < 0)
 				{
 					// Arrange to swap with him
 					iContinue = LeftChildIndex(i);
@@ -357,7 +357,7 @@ namespace Priority_Queue
 
 			if (LeftSonExists(iRoot))
 			{
-				if (valRoot.CompareTo(Left(iRoot)) < 0)
+				if (valRoot.CompareTo(Left(iRoot)) > 0)
 				{
 					return false;
 				}
@@ -368,7 +368,7 @@ namespace Priority_Queue
 			}
 			if (RightSonExists(iRoot))
 			{
-				if (valRoot.CompareTo(Right(iRoot)) < 0)
+				if (valRoot.CompareTo(Right(iRoot)) > 0)
 				{
 					return false;
 				}

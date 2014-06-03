@@ -61,7 +61,7 @@ namespace Priority_Queue
 
 		public static int ExtractMinInt(this FibonacciPriorityQueue<FpqInt> fpq)
 		{
-			return fpq.ExtractMin();
+			return fpq.Pop();
 		}
 
 		public static int PeekInt(this FibonacciPriorityQueue<FpqInt> fpq)

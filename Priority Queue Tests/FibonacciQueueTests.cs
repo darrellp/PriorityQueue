@@ -43,7 +43,7 @@ namespace Priority_Queue_Tests
 			Assert.AreEqual(10, fpq.ExtractMinInt());
 			Assert.AreEqual(11, fpq.ExtractMinInt());
 			Assert.AreEqual(13, fpq.ExtractMinInt());
-			Assert.AreEqual(null, fpq.ExtractMin(out fNoMin));
+			Assert.AreEqual(null, fpq.Pop(out fNoMin));
 			Assert.IsTrue(fNoMin);
 			fpq.Add(10);
 			fpq.Add(10);
@@ -51,7 +51,7 @@ namespace Priority_Queue_Tests
 			Assert.AreEqual(10, fpq.ExtractMinInt());
 			Assert.AreEqual(10, fpq.ExtractMinInt());
 			Assert.AreEqual(10, fpq.ExtractMinInt());
-			Assert.AreEqual(null, fpq.ExtractMin(out fNoMin));
+			Assert.AreEqual(null, fpq.Pop(out fNoMin));
 			Assert.IsTrue(fNoMin);
 		}
 
@@ -96,19 +96,19 @@ namespace Priority_Queue_Tests
 				}
 				else
 				{
-					val = fpq.ExtractMin();
+					val = fpq.Pop();
 					Assert.IsTrue(vals.Contains(val));
 					vals.Remove(val);
 				}
 			}
 			Assert.AreEqual(vals.Count, fpq.Count);
-			val = fpq.ExtractMin();
+			val = fpq.Pop();
 			Assert.IsTrue(vals.Contains(val));
 			vals.Remove(val);
 			var count = vals.Count;
 			for (var i = 0; i < count; i++)
 			{
-				var next = fpq.ExtractMin();
+				var next = fpq.Pop();
 				Assert.IsTrue(next > val);
 				Assert.IsTrue(vals.Contains(next));
 				vals.Remove(next);
