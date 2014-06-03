@@ -40,6 +40,7 @@ namespace Priority_Queue
 
 		public override string ToString()
 		{
+			// ReSharper disable once SpecifyACultureInStringConversionExplicitly
 			return Value.ToString();
 		}
 
