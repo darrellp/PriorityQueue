@@ -150,6 +150,7 @@ namespace Priority_Queue
 			}
 			newParent.Degree++;
 			newChild.Marked = false;
+			newChild.Parent = newParent;
 		}
 
 		[Conditional("DEBUG")]
@@ -301,10 +302,13 @@ namespace Priority_Queue
 		/// </summary>
 		/// <remarks>	Darrellp, 2/17/2011.	</remarks>
 		/// <param name="attr">Value to insert.</param>
+		/// <returns>Cookie to use to reference the object later</returns>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		public void Add(TPQ attr)
+		public Object Add(TPQ attr)
 		{
-			Add(new FibonacciElementWrapper<TPQ>(attr));
+			var wrapper = new FibonacciElementWrapper<TPQ>(attr);
+			Add(wrapper);
+			return wrapper;
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -410,6 +414,77 @@ namespace Priority_Queue
 		{
 			bool fNoMin;
 			return Peek(out fNoMin);
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>
+		///  Decreases the key for an element.
+		/// </summary>
+		/// <remarks>	Darrellp - 6/3/14	</remarks>
+		/// <param name="xObj">The cookie representing the element.</param>
+		/// <param name="newValue">The new smaller value.</param>
+		/// <exception cref="System.ArgumentException">
+		/// DecreaseKey recieved invalid cookie
+		/// or
+		/// Key value passed to DecreaseKey greater than current value
+		/// </exception>
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		public void DecreaseKey(object xObj, TPQ newValue)
+		{
+			var element = xObj as FibonacciElementWrapper<TPQ>;
+			if (element == null)
+			{
+				throw new ArgumentException("DecreaseKey recieved invalid cookie");
+			}
+			if (element.Attr.CompareTo(newValue) == 0)
+			{
+				return;
+			}
+			if (element.Attr.CompareTo(newValue) < 0)
+			{
+				throw new ArgumentException("Key value passed to DecreaseKey greater than current value");
+			}
+			element.Attr = newValue;
+			var parent = element.Parent;
+			if (parent != null && parent.Attr.CompareTo(newValue) > 0)
+			{
+				Cut(element, parent);
+				CascadingCut(parent);
+			}
+			if (element.Attr.CompareTo(_min.Attr) < 0)
+			{
+				_min = element;
+			}
+		}
+
+		private void CascadingCut(FibonacciElementWrapper<TPQ> element)
+		{
+			var parent = element.Parent;
+			if (parent != null)
+			{
+				if (!element.Marked)
+				{
+					element.Marked = true;
+				}
+				else
+				{
+					Cut(element, parent);
+					CascadingCut(parent);
+				}
+			}
+		}
+
+		private void Cut(FibonacciElementWrapper<TPQ> element, FibonacciElementWrapper<TPQ> parent)
+		{
+			if (ReferenceEquals(parent.FirstChild, element))
+			{
+				parent.FirstChild = IsSingleTon(element) ? null : element.RightSibling;
+			}
+			element = RemoveFromList(element);
+			parent.Degree--;
+			CombineLists(_min, element);
+			element.Parent = null;
+			element.Marked = false;
 		}
 		#endregion
 
