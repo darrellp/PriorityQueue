@@ -57,7 +57,7 @@ namespace Priority_Queue
 			return list1;
 		}
 
-		static IEnumerable<FibonacciElementWrapper<TPQ>> EnumerateLinkedList(FibonacciElementWrapper<TPQ> list)
+		internal static IEnumerable<FibonacciElementWrapper<TPQ>> EnumerateLinkedList(FibonacciElementWrapper<TPQ> list)
 		{
 			if (list == null)
 			{
@@ -152,11 +152,14 @@ namespace Priority_Queue
 			newChild.Marked = false;
 			newChild.Parent = newParent;
 		}
+		#endregion
+
+		#region Validation
 
 		[Conditional("DEBUG")]
 		private static void ThrowBadList(FibonacciElementWrapper<TPQ> list)
 		{
-			if (!IsLinkedListValid(list))
+			if (!FibonacciValidation<TPQ>.IsLinkedListValid(list))
 			{
 				throw new InvalidOperationException("Bad list");
 			}
@@ -171,101 +174,24 @@ namespace Priority_Queue
 			}
 		}
 
-		// Providing this as a place to set a breakpoint
-		static bool False()
-		{
-			return false;
-		}
-
-		private static bool IsParentValid(FibonacciElementWrapper<TPQ> parent)
-		{
-			if (parent == null)
-			{
-				return true;
-			}
-			_elementCount++;
-			if (!IsLinkedListValid(parent.FirstChild))
-			{
-				return False();
-			}
-
-			return EnumerateLinkedList(parent.FirstChild).All(IsParentValid) || False();
-		}
-
 		// ReSharper disable once StaticFieldInGenericType
-		private static int _elementCount;
 
 		public bool Validate()
 		{
-			_elementCount = 0;
-			if (!IsLinkedListValid(_min))
+			FibonacciValidation<TPQ>.ElementCount = 0;
+			if (!FibonacciValidation<TPQ>.IsLinkedListValid(_min))
 			{
-				return False();
+				return FibonacciValidation<TPQ>.False();
 			}
-			if (EnumerateLinkedList(_min).Any(parent => !IsParentValid(parent)))
+			if (EnumerateLinkedList(_min).Any(parent => !FibonacciValidation<TPQ>.IsParentValid(parent)))
 			{
-				return False();
+				return FibonacciValidation<TPQ>.False();
 			}
-			if (_elementCount != Count)
+			if (FibonacciValidation<TPQ>.ElementCount != Count)
 			{
-				return False();
+				return FibonacciValidation<TPQ>.False();
 			}
 			return true;
-		}
-
-		private static bool IsLinkedListValid(FibonacciElementWrapper<TPQ> list)
-		{
-			if (list == null)
-			{
-				return true;
-			}
-			var cur = list;
-			var nextSibling = list.RightSibling;
-
-			var vals = new HashSet<FibonacciElementWrapper<TPQ>>();
-			while (true)
-			{
-				if (vals.Contains(cur))
-				{
-					if (cur != list)
-					{
-						return False();
-					}
-					break;
-				}
-				vals.Add(cur);
-
-				cur = nextSibling;
-				if (nextSibling == null)
-				{
-					return False();
-				}
-				nextSibling = nextSibling.RightSibling;
-			}
-			var count = vals.Count;
-			vals.Clear();
-			cur = list;
-			nextSibling = list.LeftSibling;
-			while (true)
-			{
-				if (vals.Contains(cur))
-				{
-					if (cur != list)
-					{
-						return False();
-					}
-					break;
-				}
-				vals.Add(cur);
-
-				cur = nextSibling;
-				if (nextSibling == null)
-				{
-					return False();
-				}
-				nextSibling = nextSibling.LeftSibling;
-			}
-			return vals.Count == count;
 		}
 		#endregion
 
