@@ -152,6 +152,36 @@ namespace Priority_Queue
 			newChild.Marked = false;
 			newChild.Parent = newParent;
 		}
+
+		private void CascadingCut(FibonacciElementWrapper<TPQ> element)
+		{
+			var parent = element.Parent;
+			if (parent != null)
+			{
+				if (!element.Marked)
+				{
+					element.Marked = true;
+				}
+				else
+				{
+					Cut(element, parent);
+					CascadingCut(parent);
+				}
+			}
+		}
+
+		private void Cut(FibonacciElementWrapper<TPQ> element, FibonacciElementWrapper<TPQ> parent)
+		{
+			if (ReferenceEquals(parent.FirstChild, element))
+			{
+				parent.FirstChild = IsSingleTon(element) ? null : element.RightSibling;
+			}
+			element = RemoveFromList(element);
+			parent.Degree--;
+			CombineLists(_min, element);
+			element.Parent = null;
+			element.Marked = false;
+		}
 		#endregion
 
 		#region Validation
@@ -174,8 +204,14 @@ namespace Priority_Queue
 			}
 		}
 
-		// ReSharper disable once StaticFieldInGenericType
-
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>
+		///  Validates this Fibonacci priority queue.
+		/// </summary>
+		/// <remarks> There's a "False()" call that is made whenever this fails.  Setting a breakpoint there
+		/// will allow you to see where the problem is arising from.  Darrellp - 6/3/14	</remarks>
+		/// <returns><c>true</c> if everything is kosher, <c>false</c> otherwise.</returns>
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		public bool Validate()
 		{
 			FibonacciValidation<TPQ>.ElementCount = 0;
@@ -381,36 +417,6 @@ namespace Priority_Queue
 			{
 				_min = element;
 			}
-		}
-
-		private void CascadingCut(FibonacciElementWrapper<TPQ> element)
-		{
-			var parent = element.Parent;
-			if (parent != null)
-			{
-				if (!element.Marked)
-				{
-					element.Marked = true;
-				}
-				else
-				{
-					Cut(element, parent);
-					CascadingCut(parent);
-				}
-			}
-		}
-
-		private void Cut(FibonacciElementWrapper<TPQ> element, FibonacciElementWrapper<TPQ> parent)
-		{
-			if (ReferenceEquals(parent.FirstChild, element))
-			{
-				parent.FirstChild = IsSingleTon(element) ? null : element.RightSibling;
-			}
-			element = RemoveFromList(element);
-			parent.Degree--;
-			CombineLists(_min, element);
-			element.Parent = null;
-			element.Marked = false;
 		}
 		#endregion
 
