@@ -11,6 +11,7 @@ namespace Priority_Queue
 		public FibonacciElementWrapper<TPQ> RightSibling { get; set; }
 		public int Degree { get; set; }
 		public bool Marked { get; set; }
+		internal bool InfinitelyNegative { get; set; }
 
 		public FibonacciElementWrapper(TPQ attr)
 		{
@@ -20,6 +21,7 @@ namespace Priority_Queue
 			Marked = false;
 			Parent = null;
 			LeftSibling = RightSibling = this;
+			InfinitelyNegative = false;
 		}
 
 		public int CompareTo(object obj)
@@ -28,6 +30,15 @@ namespace Priority_Queue
 			if (other == null)
 			{
 				throw new ArgumentException("Different types in FibonacciElementWrapper<TPQ>.CompareTo()");
+			}
+			// Infinitely negative values are always smaller than other values
+			if (InfinitelyNegative)
+			{
+				return -1;
+			}
+			if (other.InfinitelyNegative)
+			{
+				return 1;
 			}
 			return Attr.CompareTo(other.Attr);
 		}

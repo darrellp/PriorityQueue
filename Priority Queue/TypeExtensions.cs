@@ -69,6 +69,11 @@ namespace Priority_Queue
 			return fpq.Peek();
 		}
 
+		public static void DeleteInt(this FibonacciPriorityQueue<FpqInt> fpq, FpqInt value)
+		{
+			fpq.Delete(value.Cookie);
+		}
+
 		public static void DecreaseKeyInt(this FibonacciPriorityQueue<FpqInt> fpq, FpqInt oldValue, FpqInt newValue)
 		{
 			newValue.Cookie = oldValue.Cookie;

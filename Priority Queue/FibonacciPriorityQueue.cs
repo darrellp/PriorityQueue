@@ -129,7 +129,7 @@ namespace Priority_Queue
 				else
 				{
 					CombineLists(_min, root);
-					if (root.Attr.CompareTo(_min.Attr) < 0)
+					if (root.CompareTo(_min) < 0)
 					{
 						_min = root;
 					}
@@ -248,7 +248,6 @@ namespace Priority_Queue
 			}
 			else
 			{
-				//MoveElement(val, _min);
 				CombineLists(_min, val);
 				if (val.CompareTo(_min) < 0)
 				{
@@ -380,6 +379,30 @@ namespace Priority_Queue
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>
+		///  Places an element whose value has changed.
+		/// </summary>
+		/// <remarks>
+		///  This is the guts of DecreaseKey but we use it for Delete also.
+		///		Darrellp - 6/3/14
+		/// </remarks>
+		/// <param name="element">The element.</param>
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		private void PlaceElement(FibonacciElementWrapper<TPQ> element)
+		{
+			var parent = element.Parent;
+			if (parent != null && parent.CompareTo(element) > 0)
+			{
+				Cut(element, parent);
+				CascadingCut(parent);
+			}
+			if (element.CompareTo(_min) < 0)
+			{
+				_min = element;
+			}
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>
 		///  Decreases the key for an element.
 		/// </summary>
 		/// <remarks>	Darrellp - 6/3/14	</remarks>
@@ -407,16 +430,19 @@ namespace Priority_Queue
 				throw new ArgumentException("Key value passed to DecreaseKey greater than current value");
 			}
 			element.Attr = newValue;
-			var parent = element.Parent;
-			if (parent != null && parent.Attr.CompareTo(newValue) > 0)
+			PlaceElement(element);
+		}
+
+		public void Delete(object xObj)
+		{
+			var element = xObj as FibonacciElementWrapper<TPQ>;
+			if (element == null)
 			{
-				Cut(element, parent);
-				CascadingCut(parent);
+				throw new ArgumentException("Delete recieved invalid cookie");
 			}
-			if (element.Attr.CompareTo(_min.Attr) < 0)
-			{
-				_min = element;
-			}
+			element.InfinitelyNegative = true;
+			PlaceElement(element);
+			ExtractMin();
 		}
 		#endregion
 
