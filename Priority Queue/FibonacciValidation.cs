@@ -27,7 +27,7 @@ namespace Priority_Queue
 				return False();
 			}
 
-			return FibonacciPriorityQueue<TPQ>.EnumerateLinkedList(parent.FirstChild).All(IsParentValid) || False();
+			return FibonacciPriorityQueue<TPQ>.EnumerateLinkedList(parent.FirstChild).All(elm => IsParentValid(elm) && elm.Attr.CompareTo(parent.Attr) >= 0) || False();
 		}
 
 		internal static bool IsLinkedListValid(FibonacciElementWrapper<TPQ> list)
