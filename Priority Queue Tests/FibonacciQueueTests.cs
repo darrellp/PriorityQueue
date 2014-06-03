@@ -66,7 +66,24 @@ namespace Priority_Queue_Tests
 			for (var i = 0; i < 1000; i++)
 			{
 				Assert.AreEqual(fpq.Count, vals.Count);
-				if (vals.Count != 0 && rnd.Next(100) < 20)
+				if (vals.Count == 0 || rnd.Next(100) > 30)
+				{
+					val = rnd.Next();
+					if (vals.Contains(val))
+					{
+						// Since the vals set would only keep one copy of the value this would
+						// screw us up if it were allowed to happen
+						continue;
+					}
+					vals.Add(fpq.AddInt(val));
+				}
+				else if (rnd.Next(100) < 5)
+				{
+					val = vals.First();
+					fpq.DeleteInt(val);
+					vals.Remove(val);
+				}
+				else if (rnd.Next(100) < 20)
 				{
 					val = vals.First();
 					FpqInt newval = rnd.Next(val);
@@ -76,17 +93,6 @@ namespace Priority_Queue_Tests
 					vals.Remove(val);
 					vals.Add(newval);
 					Assert.IsTrue(fpq.Validate());
-				}
-				if (vals.Count == 0 || rnd.Next(100) > 30)
-				{
-					val = rnd.Next();
-					if (vals.Contains(val))
-					{
-						// Sincs the set would only keep one copy of the value this would
-						// screw us up if it were allowed to happen
-						continue;
-					}
-					vals.Add(fpq.AddInt(val));
 				}
 				else
 				{
