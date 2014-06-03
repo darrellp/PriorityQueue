@@ -37,6 +37,7 @@ namespace Priority_Queue_Tests
 			Assert.AreEqual(6, priorityQueue.Count);
 			int cEnums = priorityQueue.Cast<IBinaryQueueElement>().Count();
 			Assert.AreEqual(6, cEnums);
+			// Pop everything off
 			priorityQueue.Pop();
 			priorityQueue.Pop();
 			priorityQueue.Pop();
@@ -54,25 +55,28 @@ namespace Priority_Queue_Tests
 			Assert.AreEqual(pq80, priorityQueue.Peek());
 			priorityQueue.Add(pq90);
 			Assert.AreEqual(2, priorityQueue.Count);
-			Assert.AreEqual(pq90, priorityQueue.Peek());
-			Assert.AreEqual(pq90, priorityQueue.Pop());
 			Assert.AreEqual(pq80, priorityQueue.Peek());
+			Assert.AreEqual(pq80, priorityQueue.Pop());
+			Assert.AreEqual(pq90, priorityQueue.Peek());
 			priorityQueue.Add(pq30);
 			priorityQueue.Add(pq90);
 			priorityQueue.Add(pq85);
 			priorityQueue.Add(pq20);
+			// 90, 90, 30, 85, 20
 			Assert.AreEqual(5, priorityQueue.Count);
-			Assert.AreEqual(pq90, priorityQueue.Pop());
-			Assert.AreEqual(pq85, priorityQueue.Pop());
+			Assert.AreEqual(pq20, priorityQueue.Pop());
+			Assert.AreEqual(pq30, priorityQueue.Pop());
+			// 90, 90, 85
 			Assert.AreEqual(3, priorityQueue.Count);
 			priorityQueue.Add(pq50);
 			priorityQueue.Add(pq35);
+			// 90, 90, 85, 50, 35
 			Assert.AreEqual(5, priorityQueue.Count);
-			Assert.AreEqual(pq80, priorityQueue.Pop());
-			Assert.AreEqual(pq50, priorityQueue.Pop());
 			Assert.AreEqual(pq35, priorityQueue.Pop());
-			Assert.AreEqual(pq30, priorityQueue.Pop());
-			Assert.AreEqual(pq20, priorityQueue.Pop());
+			Assert.AreEqual(pq50, priorityQueue.Pop());
+			Assert.AreEqual(pq85, priorityQueue.Pop());
+			Assert.AreEqual(pq90, priorityQueue.Pop());
+			Assert.AreEqual(pq90, priorityQueue.Pop());
 			Assert.AreEqual(0, priorityQueue.Count);
 
 			priorityQueue.Add(pq35);
@@ -85,12 +89,13 @@ namespace Priority_Queue_Tests
 
 			priorityQueue.Delete(pq50);
 			priorityQueue.Delete(pq30);
+			// 35, 20, 85, 90, 80
 			Assert.AreEqual(5, priorityQueue.Count);
-			Assert.AreEqual(pq90, priorityQueue.Pop());
-			Assert.AreEqual(pq85, priorityQueue.Pop());
-			Assert.AreEqual(pq80, priorityQueue.Pop());
-			Assert.AreEqual(pq35, priorityQueue.Pop());
 			Assert.AreEqual(pq20, priorityQueue.Pop());
+			Assert.AreEqual(pq35, priorityQueue.Pop());
+			Assert.AreEqual(pq80, priorityQueue.Pop());
+			Assert.AreEqual(pq85, priorityQueue.Pop());
+			Assert.AreEqual(pq90, priorityQueue.Pop());
 			Assert.AreEqual(0, priorityQueue.Count);
 		}
 		// ReSharper restore CSharpWarnings::CS1591

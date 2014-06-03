@@ -66,7 +66,7 @@
 				if (i < LstHeap.Count)
 				{
 					// Are we larger than our parent?
-					if (i != 0 && LstHeap[i].CompareTo(Parent(i)) > 0)
+					if (i != 0 && LstHeap[i].CompareTo(Parent(i)) < 0)
 					{
 						// Move us up the tree
 						UpHeap(i);
