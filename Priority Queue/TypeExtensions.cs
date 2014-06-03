@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 
 namespace Priority_Queue
 {
@@ -10,6 +11,12 @@ namespace Priority_Queue
 		public FpqInt(int value)
 		{
 			Value = value;
+		}
+
+		public FpqInt(FpqInt oldValue)
+		{
+			Value = oldValue.Value;
+			Cookie = oldValue.Cookie;
 		}
 
 		public static implicit operator FpqInt(int value)
@@ -36,25 +43,36 @@ namespace Priority_Queue
 		{
 			return Value.ToString();
 		}
+
+		public override int GetHashCode()
+		{
+			return Value.GetHashCode();
+		}
 	}
 
 	public static class FpqExtensions
 	{
-		public static FpqInt AddInt(this FibonacciPriorityQueue<FpqInt> cur, int n)
+		public static FpqInt AddInt(this FibonacciPriorityQueue<FpqInt> fpq, int n)
 		{
 			var insert = new FpqInt(n);
-			insert.Cookie = cur.Add(insert);
+			insert.Cookie = fpq.Add(insert);
 			return insert;
 		}
 
-		public static int ExtractMinInt(this FibonacciPriorityQueue<FpqInt> cur)
+		public static int ExtractMinInt(this FibonacciPriorityQueue<FpqInt> fpq)
 		{
-			return cur.ExtractMin();
+			return fpq.ExtractMin();
 		}
 
-		public static int PeekInt(this FibonacciPriorityQueue<FpqInt> cur)
+		public static int PeekInt(this FibonacciPriorityQueue<FpqInt> fpq)
 		{
-			return cur.Peek();
+			return fpq.Peek();
+		}
+
+		public static void DecreaseKeyInt(this FibonacciPriorityQueue<FpqInt> fpq, FpqInt oldValue, FpqInt newValue)
+		{
+			newValue.Cookie = oldValue.Cookie;
+			fpq.DecreaseKey(oldValue.Cookie, newValue);
 		}
 	}
 }
