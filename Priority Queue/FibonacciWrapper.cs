@@ -2,18 +2,18 @@
 
 namespace Priority_Queue
 {
-	internal class FibonacciElementWrapper<TPQ> where TPQ : IComparable
+	internal class FibonacciWrapper<TPQ> where TPQ : IComparable
 	{
 		public TPQ Attr { get; set; }
-		public FibonacciElementWrapper<TPQ> FirstChild { get; set; }
-		public FibonacciElementWrapper<TPQ> Parent { get; set; }
-		public FibonacciElementWrapper<TPQ> LeftSibling { get; set; }
-		public FibonacciElementWrapper<TPQ> RightSibling { get; set; }
+		public FibonacciWrapper<TPQ> FirstChild { get; set; }
+		public FibonacciWrapper<TPQ> Parent { get; set; }
+		public FibonacciWrapper<TPQ> LeftSibling { get; set; }
+		public FibonacciWrapper<TPQ> RightSibling { get; set; }
 		public int Degree { get; set; }
 		public bool Marked { get; set; }
 		internal bool InfinitelyNegative { get; set; }
 
-		public FibonacciElementWrapper(TPQ attr)
+		public FibonacciWrapper(TPQ attr)
 		{
 			Attr = attr;
 			Degree = 0;
@@ -26,10 +26,10 @@ namespace Priority_Queue
 
 		public int CompareTo(object obj)
 		{
-			var other = obj as FibonacciElementWrapper<TPQ>;
+			var other = obj as FibonacciWrapper<TPQ>;
 			if (other == null)
 			{
-				throw new ArgumentException("Different types in FibonacciElementWrapper<TPQ>.CompareTo()");
+				throw new ArgumentException("Different types in FibonacciWrapper<TPQ>.CompareTo()");
 			}
 			// Infinitely negative values are always smaller than other values
 			if (InfinitelyNegative)

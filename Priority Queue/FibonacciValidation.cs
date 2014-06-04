@@ -15,7 +15,7 @@ namespace Priority_Queue
 			return false;
 		}
 
-		internal static bool IsParentValid(FibonacciElementWrapper<TPQ> parent)
+		internal static bool IsParentValid(FibonacciWrapper<TPQ> parent)
 		{
 			if (parent == null)
 			{
@@ -30,7 +30,7 @@ namespace Priority_Queue
 			return FibonacciPriorityQueue<TPQ>.EnumerateLinkedList(parent.FirstChild).All(elm => IsParentValid(elm) && elm.CompareTo(parent) >= 0) || False();
 		}
 
-		internal static bool IsLinkedListValid(FibonacciElementWrapper<TPQ> list)
+		internal static bool IsLinkedListValid(FibonacciWrapper<TPQ> list)
 		{
 			if (list == null)
 			{
@@ -39,7 +39,7 @@ namespace Priority_Queue
 			var cur = list;
 			var nextSibling = list.RightSibling;
 
-			var vals = new HashSet<FibonacciElementWrapper<TPQ>>();
+			var vals = new HashSet<FibonacciWrapper<TPQ>>();
 			while (true)
 			{
 				if (vals.Contains(cur))

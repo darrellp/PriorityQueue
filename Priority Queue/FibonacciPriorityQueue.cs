@@ -9,7 +9,7 @@ namespace Priority_Queue
 	public class FibonacciPriorityQueue<TPQ> : IEnumerable<TPQ> where TPQ : IComparable
 	{
 		#region Private Variables
-		private FibonacciElementWrapper<TPQ> _min;
+		private FibonacciWrapper<TPQ> _min;
 		#endregion
 
 		#region Properties
@@ -27,17 +27,17 @@ namespace Priority_Queue
 		#endregion
 
 		#region Utility functions
-		static bool IsSingleTon(FibonacciElementWrapper<TPQ> element)
+		static bool IsSingleTon(FibonacciWrapper<TPQ> element)
 		{
 			return ReferenceEquals(element, element.RightSibling);
 		}
 
-		static bool IsSingletonOrUnattached(FibonacciElementWrapper<TPQ> element)
+		static bool IsSingletonOrUnattached(FibonacciWrapper<TPQ> element)
 		{
 			return element.RightSibling == null || IsSingleTon(element);
 		}
 
-		static FibonacciElementWrapper<TPQ> CombineLists(FibonacciElementWrapper<TPQ> list1, FibonacciElementWrapper<TPQ> list2)
+		static FibonacciWrapper<TPQ> CombineLists(FibonacciWrapper<TPQ> list1, FibonacciWrapper<TPQ> list2)
 		{
 			if (list1 == null)
 			{
@@ -57,7 +57,7 @@ namespace Priority_Queue
 			return list1;
 		}
 
-		internal static IEnumerable<FibonacciElementWrapper<TPQ>> EnumerateLinkedList(FibonacciElementWrapper<TPQ> list)
+		internal static IEnumerable<FibonacciWrapper<TPQ>> EnumerateLinkedList(FibonacciWrapper<TPQ> list)
 		{
 			if (list == null)
 			{
@@ -78,7 +78,7 @@ namespace Priority_Queue
 			} while (!ReferenceEquals(cur, list));
 		}
 
-		private static FibonacciElementWrapper<TPQ> RemoveFromList(FibonacciElementWrapper<TPQ> element)
+		private static FibonacciWrapper<TPQ> RemoveFromList(FibonacciWrapper<TPQ> element)
 		{
 			if (IsSingletonOrUnattached(element))
 			{
@@ -97,7 +97,7 @@ namespace Priority_Queue
 
 		private void Consolidate()
 		{
-			var degreeToRoot = new FibonacciElementWrapper<TPQ>[64];
+			var degreeToRoot = new FibonacciWrapper<TPQ>[64];
 			var rootList = EnumerateLinkedList(_min).ToList();
 
 			foreach (var element in rootList)
@@ -137,7 +137,7 @@ namespace Priority_Queue
 			}
 		}
 
-		private void HeapLink(FibonacciElementWrapper<TPQ> newChild, FibonacciElementWrapper<TPQ> newParent)
+		private void HeapLink(FibonacciWrapper<TPQ> newChild, FibonacciWrapper<TPQ> newParent)
 		{
 			RemoveFromList(newChild);
 			if (newParent.FirstChild == null)
@@ -153,7 +153,7 @@ namespace Priority_Queue
 			newChild.Parent = newParent;
 		}
 
-		private void CascadingCut(FibonacciElementWrapper<TPQ> element)
+		private void CascadingCut(FibonacciWrapper<TPQ> element)
 		{
 			var parent = element.Parent;
 			if (parent != null)
@@ -170,7 +170,7 @@ namespace Priority_Queue
 			}
 		}
 
-		private void Cut(FibonacciElementWrapper<TPQ> element, FibonacciElementWrapper<TPQ> parent)
+		private void Cut(FibonacciWrapper<TPQ> element, FibonacciWrapper<TPQ> parent)
 		{
 			if (ReferenceEquals(parent.FirstChild, element))
 			{
@@ -187,7 +187,7 @@ namespace Priority_Queue
 		#region Validation
 
 		[Conditional("DEBUG")]
-		private static void ThrowBadList(FibonacciElementWrapper<TPQ> list)
+		private static void ThrowBadList(FibonacciWrapper<TPQ> list)
 		{
 			if (!FibonacciValidation<TPQ>.IsLinkedListValid(list))
 			{
@@ -234,12 +234,12 @@ namespace Priority_Queue
 		#region Priority Queue Operations
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>
-		///  Insert an FibonacciElementWrapper value into the priority queue.
+		///  Insert an FibonacciWrapper value into the priority queue.
 		/// </summary>
 		/// <remarks>	Darrellp, 2/17/2011.	</remarks>
 		/// <param name="val">Value to insert.</param>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		private void AddWrapper(FibonacciElementWrapper<TPQ> val)
+		private void AddWrapper(FibonacciWrapper<TPQ> val)
 		{
 			if (_min == null)
 			{
@@ -267,7 +267,7 @@ namespace Priority_Queue
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		public Object Add(TPQ attr)
 		{
-			var wrapper = new FibonacciElementWrapper<TPQ>(attr);
+			var wrapper = new FibonacciWrapper<TPQ>(attr);
 			AddWrapper(wrapper);
 			return wrapper;
 		}
@@ -387,7 +387,7 @@ namespace Priority_Queue
 		/// </remarks>
 		/// <param name="element">The element.</param>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		private void PlaceElement(FibonacciElementWrapper<TPQ> element)
+		private void PlaceElement(FibonacciWrapper<TPQ> element)
 		{
 			var parent = element.Parent;
 			if (parent != null && parent.CompareTo(element) > 0)
@@ -416,7 +416,7 @@ namespace Priority_Queue
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		public void DecreaseKey(object xObj, TPQ newValue)
 		{
-			var element = xObj as FibonacciElementWrapper<TPQ>;
+			var element = xObj as FibonacciWrapper<TPQ>;
 			if (element == null)
 			{
 				throw new ArgumentException("DecreaseKey recieved invalid cookie");
@@ -443,7 +443,7 @@ namespace Priority_Queue
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		public void Delete(object xObj)
 		{
-			var element = xObj as FibonacciElementWrapper<TPQ>;
+			var element = xObj as FibonacciWrapper<TPQ>;
 			if (element == null)
 			{
 				throw new ArgumentException("Delete recieved invalid cookie");
@@ -502,7 +502,7 @@ namespace Priority_Queue
 		#region IEnumerable members
 		protected IEnumerator<TPQ> GetEnumerator()
 		{
-			var returns = new Stack<FibonacciElementWrapper<TPQ>>();
+			var returns = new Stack<FibonacciWrapper<TPQ>>();
 			var cur = _min;
 
 			while (true)

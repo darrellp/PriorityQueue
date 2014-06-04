@@ -41,7 +41,8 @@
   <ItemGroup>
     <Compile Include="BinaryPriorityQueue.cs" />
     <Compile Include="BinaryQueueWithDeletions.cs" />
-    <Compile Include="FibonacciElementWrapper.cs" />
+    <Compile Include="BinaryWrapper.cs" />
+    <Compile Include="FibonacciWrapper.cs" />
     <Compile Include="FibonacciPriorityQueue.cs" />
     <Compile Include="FibonacciValidation.cs" />
     <Compile Include="IBinaryQueueElement.cs" />
