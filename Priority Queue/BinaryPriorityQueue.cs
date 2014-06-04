@@ -4,7 +4,10 @@ using System.Collections.Generic;
 namespace Priority_Queue
 {
 	////////////////////////////////////////////////////////////////////////////////////////////////////
-	/// <summary>	A priority queue implemented as an array.  This is a pretty standard implementation. </summary>
+	/// <summary>
+	/// Priority queue implemented as an array.  The "smallest" (as determined by
+	/// IComparable) element is always popped off.
+	///  </summary>
 	///
 	/// <remarks>	Darrellp, 2/17/2011. </remarks>
 	////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -51,13 +54,12 @@ namespace Priority_Queue
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>	Return the maximal element in the queue. </summary>
-		///
-		/// <remarks>	Darrellp, 2/17/2011. </remarks>
-		///
-		/// <exception cref="IndexOutOfRangeException">	Trying to peek at an empty priority queue. </exception>
-		///
-		/// <returns>	Maximal element in the queue. </returns>
+		/// <summary>
+		///  Return the smallest element in the queue.
+		/// </summary>
+		/// <remarks>	Darrellp, 2/17/2011.	</remarks>
+		/// <param name="fNoMin">if set to <c>true</c> there is nothing currently in the queue.</param>
+		/// <returns>Smallest element in the queue.</returns>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		public TPQ Peek(out bool fNoMin)
@@ -69,12 +71,19 @@ namespace Priority_Queue
 				return default(TPQ);
 			}
 
-			// Otherwise, the root is our largest element
+			// Otherwise, the root is our smallest element
 			// The 0'th element in the list is always the root
 			fNoMin = false;
 			return LstHeap[0];
 		}
 
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>
+		///  Peeks at the smallest element without removing it.
+		/// </summary>
+		/// <remarks>	Darrellp - 6/4/14	</remarks>
+		/// <returns>Smallest element or default(TPQ) if no smallest element.</returns>
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		public TPQ Peek()
 		{
 			bool fNoMin;
@@ -82,13 +91,10 @@ namespace Priority_Queue
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>	Remove and return the maximal element in the queue. </summary>
-		///
+		/// <summary>	Remove and return the smallest element in the queue. </summary>
 		/// <remarks>	Darrellp, 2/17/2011. </remarks>
-		///
-		/// <exception cref="IndexOutOfRangeException">	Thrown when the priority queue is empty. </exception>
-		///
-		/// <returns>	Maximal element. </returns>
+		/// <param name="fNoMin">if set to <c>true</c> there is nothing currently in the queue.</param>
+		/// <returns>	Smallest element. </returns>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		public virtual TPQ Pop(out bool fNoMin)
@@ -119,6 +125,13 @@ namespace Priority_Queue
 			return valRet;
 		}
 
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>
+		///  Pops smallest element from the stack.
+		/// </summary>
+		/// <remarks>	Darrellp - 6/4/14	</remarks>
+		/// <returns>Smallest element</returns>
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		public TPQ Pop()
 		{
 			bool fNoMin;
@@ -334,13 +347,13 @@ namespace Priority_Queue
 				// Initialize
 				var iContinue = -1;
 
-				// If we have a right son and he is larger than us
+				// If we have a right son and he is smaller than us
 				if (RightSonExists(i) && Right(i).CompareTo(ArrayVal(i)) < 0)
 				{
-					// Arrange to swap us with the larger of our two children
+					// Arrange to swap us with the smaller of our two children
 					iContinue = Left(i).CompareTo(Right(i)) > 0 ? RightChildIndex(i) : LeftChildIndex(i);
 				}
-				// Else if we have a left son and he is larger than us
+				// Else if we have a left son and he is smaller than us
 				else if (LeftSonExists(i) && Left(i).CompareTo(ArrayVal(i)) < 0)
 				{
 					// Arrange to swap with him
@@ -361,6 +374,13 @@ namespace Priority_Queue
 		#endregion
 
 		#region Validation
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>
+		///  Validates the priority queue.
+		/// </summary>
+		/// <remarks>	Darrellp - 6/4/14	</remarks>
+		/// <returns><c>true</c> if valid, <c>false</c> otherwise.</returns>
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		public virtual bool FValidate()
 		{
 			return LstHeap.Count == 0 || FValidate(0);
