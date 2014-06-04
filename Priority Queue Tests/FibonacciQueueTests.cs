@@ -37,20 +37,20 @@ namespace Priority_Queue_Tests
 			Assert.IsFalse(fNoMin);
 			Assert.AreEqual(13, val);
 			fpq.Add(10);
-			Assert.AreEqual(10, fpq.PeekInt());
+			Assert.AreEqual(10, (int)fpq.Peek());
 			fpq.Add(11);
-			Assert.AreEqual(10, fpq.PeekInt());
-			Assert.AreEqual(10, fpq.ExtractMinInt());
-			Assert.AreEqual(11, fpq.ExtractMinInt());
-			Assert.AreEqual(13, fpq.ExtractMinInt());
+			Assert.AreEqual(10, (int)fpq.Peek());
+			Assert.AreEqual(10, (int)fpq.Pop());
+			Assert.AreEqual(11, (int)fpq.Pop());
+			Assert.AreEqual(13, (int)fpq.Pop());
 			Assert.AreEqual(null, fpq.Pop(out fNoMin));
 			Assert.IsTrue(fNoMin);
 			fpq.Add(10);
 			fpq.Add(10);
 			fpq.Add(10);
-			Assert.AreEqual(10, fpq.ExtractMinInt());
-			Assert.AreEqual(10, fpq.ExtractMinInt());
-			Assert.AreEqual(10, fpq.ExtractMinInt());
+			Assert.AreEqual(10, (int)fpq.Pop());
+			Assert.AreEqual(10, (int)fpq.Pop());
+			Assert.AreEqual(10, (int)fpq.Pop());
 			Assert.AreEqual(null, fpq.Pop(out fNoMin));
 			Assert.IsTrue(fNoMin);
 		}
@@ -127,12 +127,12 @@ namespace Priority_Queue_Tests
 			var i5 = fpq.Add(500);
 			var i6 = fpq.Add(600);
 			fpq.Add(10);
-			Assert.AreEqual(10, fpq.ExtractMinInt());
-			Assert.AreEqual(100, fpq.PeekInt());
+			Assert.AreEqual(10, (int)fpq.Pop());
+			Assert.AreEqual(100, (int)fpq.Peek());
 			fpq.DecreaseKey(i1, 99);
-			Assert.AreEqual(99, fpq.PeekInt());
+			Assert.AreEqual(99, (int)fpq.Peek());
 			fpq.DecreaseKey(i2, 98);
-			Assert.AreEqual(98, fpq.PeekInt());
+			Assert.AreEqual(98, (int)fpq.Peek());
 		}
 	}
 }
