@@ -32,7 +32,7 @@ namespace Priority_Queue_Tests
 		public void TestExtractMin()
 		{
 			bool fNoMin;
-			var fpq = new FibonacciPriorityQueue<Fpqt<int>> { 13 };
+			var fpq = new FibonacciPriorityQueue<Pqt<int>> { 13 };
 			int val = fpq.Peek(out fNoMin);
 			Assert.IsFalse(fNoMin);
 			Assert.AreEqual(13, val);
@@ -59,9 +59,9 @@ namespace Priority_Queue_Tests
 		public void TestRandomOps()
 		{
 			var rnd = new Random(110456);
-			var fpq = new FibonacciPriorityQueue<Fpqt<int>>();
-			var vals = new HashSet<Fpqt<int>>();
-			Fpqt<int> val;
+			var fpq = new FibonacciPriorityQueue<Pqt<int>>();
+			var vals = new HashSet<Pqt<int>>();
+			Pqt<int> val;
 
 			for (var i = 0; i < 1000; i++)
 			{
@@ -86,7 +86,7 @@ namespace Priority_Queue_Tests
 				else if (rnd.Next(100) < 20)
 				{
 					val = vals.First();
-					Fpqt<int> newval = rnd.Next(val);
+					Pqt<int> newval = rnd.Next(val);
 					// DecreaseKeyTyped will transfer cookie value from the old to the
 					// new FpqInt.
 					fpq.DecreaseKeyTyped(val, newval);
@@ -120,7 +120,7 @@ namespace Priority_Queue_Tests
 		[TestMethod]
 		public void TestDecreaseKey()
 		{
-			var fpq = new FibonacciPriorityQueue<Fpqt<int>>();
+			var fpq = new FibonacciPriorityQueue<Pqt<int>>();
 			var i1 = fpq.Add(100);
 			var i2 = fpq.Add(300);
 			var i3 = fpq.Add(400);
