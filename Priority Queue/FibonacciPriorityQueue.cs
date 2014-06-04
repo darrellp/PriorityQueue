@@ -447,17 +447,42 @@ namespace Priority_Queue
 		#endregion
 
 		#region Typed Input
+		// See fpqt.cs for more info on typed input
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>
+		///  Adds a typed input value.
+		/// </summary>
+		/// <remarks>	Darrellp - 6/4/14	</remarks>
+		/// <param name="n">The typed input to add.</param>
+		/// <returns>Typed input with cookie properly set.</returns>
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		public TPQ AddTyped(TPQ n)
 		{
 			((IHasCookie)n).Cookie = Add(n);
 			return n;
 		}
 
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>
+		///  Deletes the typed input value.
+		/// </summary>
+		/// <remarks>	Darrellp - 6/4/14	</remarks>
+		/// <param name="value">The value to be deleted.</param>
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		public void DeleteTyped(TPQ value)
 		{
 			Delete(((IHasCookie)value).Cookie);
 		}
 
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>
+		///  Decreases the key for the typed input.
+		/// </summary>
+		/// <remarks>	Darrellp - 6/4/14	</remarks>
+		/// <param name="oldValue">The old value.</param>
+		/// <param name="newValue">The new value.</param>
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		public void DecreaseKeyTyped(TPQ oldValue, TPQ newValue)
 		{
 			((IHasCookie)newValue).Cookie = ((IHasCookie)oldValue).Cookie;

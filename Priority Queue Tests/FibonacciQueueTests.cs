@@ -32,7 +32,7 @@ namespace Priority_Queue_Tests
 		public void TestExtractMin()
 		{
 			bool fNoMin;
-			var fpq = new FibonacciPriorityQueue<FpqInt> { 13 };
+			var fpq = new FibonacciPriorityQueue<Fpqt<int>> { 13 };
 			int val = fpq.Peek(out fNoMin);
 			Assert.IsFalse(fNoMin);
 			Assert.AreEqual(13, val);
@@ -119,7 +119,7 @@ namespace Priority_Queue_Tests
 		[TestMethod]
 		public void TestDecreaseKey()
 		{
-			var fpq = new FibonacciPriorityQueue<FpqInt>();
+			var fpq = new FibonacciPriorityQueue<Fpqt<int>>();
 			var i1 = fpq.Add(100);
 			var i2 = fpq.Add(300);
 			var i3 = fpq.Add(400);
