@@ -433,6 +433,14 @@ namespace Priority_Queue
 			PlaceElement(element);
 		}
 
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>
+		///  Deletes the specified object.
+		/// </summary>
+		/// <remarks>	Darrellp - 6/4/14	</remarks>
+		/// <param name="xObj">The cookie for the object to be deleted.</param>
+		/// <exception cref="System.ArgumentException">Delete recieved invalid cookie</exception>
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		public void Delete(object xObj)
 		{
 			var element = xObj as FibonacciElementWrapper<TPQ>;
@@ -492,12 +500,33 @@ namespace Priority_Queue
 		#endregion
 
 		#region IEnumerable members
-		public IEnumerator<TPQ> GetEnumerator()
+		protected IEnumerator<TPQ> GetEnumerator()
 		{
-			throw new NotImplementedException();
+			var returns = new Stack<FibonacciElementWrapper<TPQ>>();
+			var cur = _min;
+
+			while (true)
+			{
+				foreach (var root in EnumerateLinkedList(cur))
+				{
+					returns.Push(root);
+				}
+				if (returns.Count == 0)
+				{
+					break;
+				}
+				cur = returns.Pop();
+				yield return cur.Attr;
+				cur = cur.FirstChild;
+			}
 		}
 
-		IEnumerator IEnumerable.GetEnumerator()
+		IEnumerator<TPQ> IEnumerable<TPQ>.GetEnumerator()
+		{
+			return GetEnumerator();
+		}
+
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
 		{
 			return GetEnumerator();
 		}

@@ -102,6 +102,7 @@ namespace Priority_Queue_Tests
 				}
 			}
 			Assert.AreEqual(vals.Count, fpq.Count);
+			Assert.AreEqual(vals.Count, fpq.ToList().Count);
 			val = fpq.Pop();
 			Assert.IsTrue(vals.Contains(val));
 			vals.Remove(val);
