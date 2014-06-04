@@ -59,9 +59,9 @@ namespace Priority_Queue_Tests
 		public void TestRandomOps()
 		{
 			var rnd = new Random(110456);
-			var fpq = new FibonacciPriorityQueue<FpqInt>();
-			var vals = new HashSet<FpqInt>();
-			FpqInt val;
+			var fpq = new FibonacciPriorityQueue<Fpqt<int>>();
+			var vals = new HashSet<Fpqt<int>>();
+			Fpqt<int> val;
 
 			for (var i = 0; i < 1000; i++)
 			{
@@ -75,21 +75,21 @@ namespace Priority_Queue_Tests
 						// screw us up if it were allowed to happen
 						continue;
 					}
-					vals.Add(fpq.AddInt(val));
+					vals.Add(fpq.AddTyped(val));
 				}
 				else if (rnd.Next(100) < 5)
 				{
 					val = vals.First();
-					fpq.DeleteInt(val);
+					fpq.DeleteTyped(val);
 					vals.Remove(val);
 				}
 				else if (rnd.Next(100) < 20)
 				{
 					val = vals.First();
-					FpqInt newval = rnd.Next(val);
-					// DecreaseKeyInt will transfer cookie value from the old to the
+					Fpqt<int> newval = rnd.Next(val);
+					// DecreaseKeyTyped will transfer cookie value from the old to the
 					// new FpqInt.
-					fpq.DecreaseKeyInt(val, newval);
+					fpq.DecreaseKeyTyped(val, newval);
 					vals.Remove(val);
 					vals.Add(newval);
 					Assert.IsTrue(fpq.Validate());
