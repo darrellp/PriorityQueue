@@ -2,7 +2,12 @@
 
 namespace Priority_Queue
 {
-	public class Fpqt<T> : IComparable where T : IComparable
+	public interface IHasCookie
+	{
+		object Cookie { get; set; }
+	}
+
+	public class Fpqt<T> : IComparable, IHasCookie where T : IComparable
 	{
 		public object Cookie { get; set; }
 		protected T Value { get; set; }
@@ -82,27 +87,6 @@ namespace Priority_Queue
 		public static implicit operator double(FpqDbl value)
 		{
 			return value.Value;
-		}
-	}
-
-	public static class FpqExtensions
-	{
-		public static FpqInt AddInt(this FibonacciPriorityQueue<FpqInt> fpq, int n)
-		{
-			var insert = new FpqInt(n);
-			insert.Cookie = fpq.Add(insert);
-			return insert;
-		}
-
-		public static void DeleteInt(this FibonacciPriorityQueue<FpqInt> fpq, FpqInt value)
-		{
-			fpq.Delete(value.Cookie);
-		}
-
-		public static void DecreaseKeyInt(this FibonacciPriorityQueue<FpqInt> fpq, FpqInt oldValue, FpqInt newValue)
-		{
-			newValue.Cookie = oldValue.Cookie;
-			fpq.DecreaseKey(oldValue.Cookie, newValue);
 		}
 	}
 }

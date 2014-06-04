@@ -239,7 +239,7 @@ namespace Priority_Queue
 		/// <remarks>	Darrellp, 2/17/2011.	</remarks>
 		/// <param name="val">Value to insert.</param>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		private void Add(FibonacciElementWrapper<TPQ> val)
+		private void AddWrapper(FibonacciElementWrapper<TPQ> val)
 		{
 			if (_min == null)
 			{
@@ -268,7 +268,7 @@ namespace Priority_Queue
 		public Object Add(TPQ attr)
 		{
 			var wrapper = new FibonacciElementWrapper<TPQ>(attr);
-			Add(wrapper);
+			AddWrapper(wrapper);
 			return wrapper;
 		}
 
@@ -444,6 +444,26 @@ namespace Priority_Queue
 			PlaceElement(element);
 			Pop();
 		}
+		#endregion
+
+		#region Typed Input
+		public TPQ AddTyped(TPQ n)
+		{
+			((IHasCookie)n).Cookie = Add(n);
+			return n;
+		}
+
+		public void DeleteTyped(TPQ value)
+		{
+			Delete(((IHasCookie)value).Cookie);
+		}
+
+		public void DecreaseKeyTyped(TPQ oldValue, TPQ newValue)
+		{
+			((IHasCookie)newValue).Cookie = ((IHasCookie)oldValue).Cookie;
+			DecreaseKey(((IHasCookie)oldValue).Cookie, newValue);
+		}
+
 		#endregion
 
 		#region IEnumerable members
