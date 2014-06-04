@@ -60,18 +60,25 @@ namespace Priority_Queue
 		/// <returns>	Maximal element in the queue. </returns>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		public TPQ Peek()
+		public TPQ Peek(out bool fNoMin)
 		{
 			// If there are no elements to peek
 			if (LstHeap.Count == 0)
 			{
-				// Throw and exception
-				throw new IndexOutOfRangeException("Peeking at an empty priority queue");
+				fNoMin = true;
+				return default(TPQ);
 			}
 
 			// Otherwise, the root is our largest element
 			// The 0'th element in the list is always the root
+			fNoMin = false;
 			return LstHeap[0];
+		}
+
+		public TPQ Peek()
+		{
+			bool fNoMin;
+			return Peek(out fNoMin);
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -84,13 +91,15 @@ namespace Priority_Queue
 		/// <returns>	Maximal element. </returns>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		public virtual TPQ Pop()
+		public virtual TPQ Pop(out bool fNoMin)
 		{
+			fNoMin = false;
+
 			// If There's nothing to pop
 			if (LstHeap.Count == 0)
 			{
-				// Throw an exception
-				throw new IndexOutOfRangeException("Popping an empty priority queue");
+				fNoMin = true;
+				return default(TPQ);
 			}
 
 			// Save away the max value in the heap
@@ -108,6 +117,12 @@ namespace Priority_Queue
 
 			// Return the element we removed
 			return valRet;
+		}
+
+		public TPQ Pop()
+		{
+			bool fNoMin;
+			return Pop(out fNoMin);
 		}
 		#endregion
 

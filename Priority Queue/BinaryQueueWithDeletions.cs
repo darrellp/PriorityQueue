@@ -1,4 +1,6 @@
-﻿namespace Priority_Queue
+﻿using System.Linq;
+
+namespace Priority_Queue
 {
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	/// <summary>	Priority queue with deletions. </summary>
@@ -25,9 +27,9 @@
 		/// <returns>	The previous largest object. </returns>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		public override TPQ Pop()
+		public override TPQ Pop(out bool fNoMin)
 		{
-			var valRet = base.Pop();
+			var valRet = base.Pop(out fNoMin);
 
 			// When an element is removed from the heap, it's index must be reset.
 			valRet.Index = -1;
@@ -84,15 +86,7 @@
 		#region Private overrides
 		public override bool FValidate()
 		{
-			for (var iVal = 0; iVal < LstHeap.Count; iVal++)
-			{
-				if (LstHeap[iVal].Index != iVal)
-				{
-					return false;
-				}
-			}
-
-			return base.FValidate();
+			return !LstHeap.Where((t, iVal) => t.Index != iVal).Any() && base.FValidate();
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -110,7 +104,6 @@
 		protected override void SetAt(int i, TPQ val)
 		{
 			base.SetAt(i, val);
-			//val.SetIndex(i);
 			val.Index = i;
 		}
 		#endregion

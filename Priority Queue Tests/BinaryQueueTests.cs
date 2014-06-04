@@ -15,17 +15,19 @@ namespace Priority_Queue_Tests
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(IndexOutOfRangeException))]
-		public void TestPeekException()
+		public void TestEmptyPeek()
 		{
-			(new BinaryPriorityQueue<int>()).Peek();
+			bool fNoMin;
+			(new BinaryPriorityQueue<int>()).Peek(out fNoMin);
+			Assert.IsTrue(fNoMin);
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(IndexOutOfRangeException))]
-		public void TestPopException()
+		public void TestEmptyPop()
 		{
-			(new BinaryPriorityQueue<int>()).Pop();
+			bool fNoMin;
+			(new BinaryPriorityQueue<int>()).Pop(out fNoMin);
+			Assert.IsTrue(fNoMin);
 		}
 
 		[TestMethod]
