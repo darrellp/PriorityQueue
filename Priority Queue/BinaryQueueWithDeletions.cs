@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace Priority_Queue
 {
@@ -15,7 +16,7 @@ namespace Priority_Queue
 	/// </remarks>
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	public class BinaryQueueWithDeletions<TPQ> : BinaryPriorityQueue<TPQ> where TPQ : IBinaryQueueElement
+	public class BinaryQueueWithDeletions<TPQ> : BinaryPriorityQueue<BinaryWrapper<TPQ>> where TPQ : IComparable
 	{
 		#region Public overrides
 
@@ -27,25 +28,70 @@ namespace Priority_Queue
 		/// <returns>	The previous largest object. </returns>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		public override TPQ Pop(out bool fNoMin)
+		public new TPQ Pop(out bool fNoMin)
 		{
 			var valRet = base.Pop(out fNoMin);
 
 			// When an element is removed from the heap, it's index must be reset.
 			valRet.Index = -1;
-			return valRet;
+			return fNoMin ? default(TPQ) : valRet.Attr;
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>	Delete a value from the heap. </summary>
-		///
-		/// <remarks>	Darrellp, 2/17/2011. </remarks>
-		///
-		/// <param name="val">	Value to remove. </param>
+		/// <summary>
+		///  Pops smallest element from the stack.
+		/// </summary>
+		/// <remarks>	Darrellp - 6/4/14	</remarks>
+		/// <returns>Smallest element</returns>
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		public new TPQ Pop()
+		{
+			bool fNoMin;
+			return Pop(out fNoMin);
+		}
+
+		public new TPQ Peek(out bool fNoMin)
+		{
+			var valRet = base.Peek(out fNoMin);
+			return fNoMin ? default(TPQ) : valRet.Attr;
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>
+		///  Peeks at the smallest element without removing it.
+		/// </summary>
+		/// <remarks>	Darrellp - 6/4/14	</remarks>
+		/// <returns>Smallest element or default(TPQ) if no smallest element.</returns>
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		public new TPQ Peek()
+		{
+			bool fNoMin;
+			return Peek(out fNoMin);
+		}
+
+		public object Add(TPQ val)
+		{
+			var wrapper = new BinaryWrapper<TPQ>(val);
+			Add(wrapper);
+			return wrapper;
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		///  <summary>	Delete a value from the heap. </summary>
+		/// 
+		///  <remarks>	Darrellp, 2/17/2011. </remarks>
+		/// 
+		/// <param name="valObj">Cookie for object to be deleted</param>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		public void Delete(TPQ val)
+		public void Delete(object valObj)
 		{
+			var val = valObj as BinaryWrapper<TPQ>;
+
+			if (val == null)
+			{
+				throw new ArgumentException("Invalid type passed to Delete");
+			}
 			// Retrieve the item's index
 			var i = val.Index;
 
@@ -101,11 +147,43 @@ namespace Priority_Queue
 		/// <param name="val">	The value. </param>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		protected override void SetAt(int i, TPQ val)
+		protected override void SetAt(int i, BinaryWrapper<TPQ> val)
 		{
 			base.SetAt(i, val);
 			val.Index = i;
 		}
 		#endregion
+		#region Typed Input
+		// See fpqt.cs for more info on typed input
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>
+		///  Adds a typed input value.
+		/// </summary>
+		/// <remarks>	Darrellp - 6/4/14	</remarks>
+		/// <param name="n">The typed input to add.</param>
+		/// <returns>Typed input with cookie properly set.</returns>
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		public TPQ AddTyped(TPQ n)
+		{
+			((IHasCookie)n).Cookie = Add(n);
+			return n;
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>
+		///  Deletes the typed input value.
+		/// </summary>
+		/// <remarks>	Darrellp - 6/4/14	</remarks>
+		/// <param name="value">The value to be deleted.</param>
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		public void DeleteTyped(TPQ value)
+		{
+			Delete(((IHasCookie)value).Cookie);
+			// Cookie is no longer valid
+			((IHasCookie) value).Cookie = null;
+		}
+		#endregion
+
 	}
 }

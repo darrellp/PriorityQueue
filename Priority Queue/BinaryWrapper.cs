@@ -15,7 +15,7 @@ namespace Priority_Queue
 
 		public int CompareTo(object obj)
 		{
-			var other = obj as FibonacciWrapper<TPQ>;
+			var other = obj as BinaryWrapper<TPQ>;
 			if (other == null)
 			{
 				throw new ArgumentException("Different types in FibonacciWrapper<TPQ>.CompareTo()");
