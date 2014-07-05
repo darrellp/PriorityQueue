@@ -12,7 +12,7 @@ namespace Priority_Queue
 	/// <remarks>	Darrellp, 2/17/2011. </remarks>
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	public class BinaryPriorityQueue<TPQ> : IEnumerable<TPQ> where TPQ : IComparable
+	public class BinaryPriorityQueue<TPQ> : IEnumerable<TPQ>
 	{
 		#region Private Variables
 		/// <summary>
@@ -21,6 +21,7 @@ namespace Priority_Queue
 		/// they're implemented in the CLR Framework.
 		/// </summary>
 		protected readonly List<TPQ> LstHeap = new List<TPQ>();
+		private readonly Func<TPQ, TPQ, int> _compare; 
 		#endregion
 
 		#region Properties
@@ -33,8 +34,32 @@ namespace Priority_Queue
 		}
 		#endregion
 
-		#region Public methods
+		#region Constructor
+		public BinaryPriorityQueue(Func<TPQ, TPQ, int> compare = null)
+		{
+			_compare = compare;
+		}
+		#endregion
 
+		#region Comparison
+		private int Compare(TPQ tpq1, TPQ tpq2)
+		{
+			if (_compare != null)
+			{
+				return _compare(tpq1, tpq2);
+			}
+
+			var cmp1 = tpq1 as IComparable;
+			var cmp2 = tpq2 as IComparable;
+			if (cmp1 == null || cmp2 == null)
+			{
+				throw new InvalidOperationException("No comparison function and Attrs are not IComparable");
+			}
+			return cmp1.CompareTo(cmp2);
+		}
+		#endregion
+
+		#region Public methods
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Insert a value into the priority queue. </summary>
 		///
@@ -323,7 +348,7 @@ namespace Priority_Queue
 		protected void UpHeap(int i)
 		{
 			// While we're not the root and our parent is smaller than we are
-			while (i > 0 && ArrayVal(i).CompareTo(Parent(i)) < 0)
+			while (i > 0 && Compare(ArrayVal(i), Parent(i)) < 0)
 			{
 				// Swap us with our parents
 				Swap(i, ParentIndex(i));
@@ -348,13 +373,13 @@ namespace Priority_Queue
 				var iContinue = -1;
 
 				// If we have a right son and he is smaller than us
-				if (RightSonExists(i) && Right(i).CompareTo(ArrayVal(i)) < 0)
+				if (RightSonExists(i) && Compare(Right(i), ArrayVal(i)) < 0)
 				{
 					// Arrange to swap us with the smaller of our two children
-					iContinue = Left(i).CompareTo(Right(i)) > 0 ? RightChildIndex(i) : LeftChildIndex(i);
+					iContinue = Compare(Left(i), Right(i)) > 0 ? RightChildIndex(i) : LeftChildIndex(i);
 				}
 				// Else if we have a left son and he is smaller than us
-				else if (LeftSonExists(i) && Left(i).CompareTo(ArrayVal(i)) < 0)
+				else if (LeftSonExists(i) && Compare(Left(i), ArrayVal(i)) < 0)
 				{
 					// Arrange to swap with him
 					iContinue = LeftChildIndex(i);
@@ -392,7 +417,7 @@ namespace Priority_Queue
 
 			if (LeftSonExists(iRoot))
 			{
-				if (valRoot.CompareTo(Left(iRoot)) > 0)
+				if (Compare(valRoot, Left(iRoot)) > 0)
 				{
 					return false;
 				}
@@ -403,7 +428,7 @@ namespace Priority_Queue
 			}
 			if (RightSonExists(iRoot))
 			{
-				if (valRoot.CompareTo(Right(iRoot)) > 0)
+				if (Compare(valRoot, Right(iRoot)) > 0)
 				{
 					return false;
 				}
