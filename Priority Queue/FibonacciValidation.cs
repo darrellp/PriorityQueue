@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Priority_Queue
 {
-	public static class FibonacciValidation<TPQ> where TPQ : IComparable
+	public static class FibonacciValidation<TPQ>
 	{
 		// ReSharper disable once StaticFieldInGenericType
 		internal static int ElementCount;

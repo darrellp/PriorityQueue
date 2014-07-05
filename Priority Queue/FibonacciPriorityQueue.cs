@@ -6,10 +6,11 @@ using System.Linq;
 
 namespace Priority_Queue
 {
-	public class FibonacciPriorityQueue<TPQ> : IEnumerable<TPQ> where TPQ : IComparable
+	public class FibonacciPriorityQueue<TPQ> : IEnumerable<TPQ>
 	{
 		#region Private Variables
 		private FibonacciWrapper<TPQ> _min;
+		private Func<TPQ, TPQ, int> _compare;
 		#endregion
 
 		#region Properties
@@ -20,9 +21,10 @@ namespace Priority_Queue
 		#endregion
 
 		#region Constructor
-		public FibonacciPriorityQueue()
+		public FibonacciPriorityQueue(Func<TPQ, TPQ, int> compare = null)
 		{
 			Count = 0;
+			_compare = compare;
 		}
 		#endregion
 
@@ -267,7 +269,7 @@ namespace Priority_Queue
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		public Object Add(TPQ attr)
 		{
-			var wrapper = new FibonacciWrapper<TPQ>(attr);
+			var wrapper = new FibonacciWrapper<TPQ>(attr, _compare);
 			AddWrapper(wrapper);
 			return wrapper;
 		}
@@ -421,11 +423,28 @@ namespace Priority_Queue
 			{
 				throw new ArgumentException("DecreaseKey recieved invalid cookie");
 			}
-			if (element.Attr.CompareTo(newValue) == 0)
+			var attrThis = element.Attr;
+			int cmp;
+
+			if (_compare != null)
+			{
+				cmp = _compare(attrThis, newValue);
+			}
+			else
+			{
+				var icmp = element.Attr as IComparable;
+
+				if (icmp == null)
+				{
+					throw new InvalidOperationException("_compare needs to be set of TPQ needs to be of type IComparable");
+				}
+				cmp = icmp.CompareTo(newValue);
+			}
+			if (cmp == 0)
 			{
 				return;
 			}
-			if (element.Attr.CompareTo(newValue) < 0)
+			if (cmp < 0)
 			{
 				throw new ArgumentException("Key value passed to DecreaseKey greater than current value");
 			}
