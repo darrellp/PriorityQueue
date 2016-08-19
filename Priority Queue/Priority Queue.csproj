@@ -45,7 +45,7 @@
     <Compile Include="FibonacciWrapper.cs" />
     <Compile Include="FibonacciPriorityQueue.cs" />
     <Compile Include="FibonacciValidation.cs" />
-    <Compile Include="IBinaryQueueElement.cs" />
+    <Compile Include="IBinaryQueueDeletionElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Pqt.cs" />
   </ItemGroup>

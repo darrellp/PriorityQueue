@@ -1,0 +1,8 @@
+C:\Users\Darrell\Documents\Visual Studio 2015\Projects\Github\PriorityQueue\Priority Queue Tests\bin\Debug\Priority Queue Tests.dll
+C:\Users\Darrell\Documents\Visual Studio 2015\Projects\Github\PriorityQueue\Priority Queue Tests\bin\Debug\Priority Queue Tests.pdb
+C:\Users\Darrell\Documents\Visual Studio 2015\Projects\Github\PriorityQueue\Priority Queue Tests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Users\Darrell\Documents\Visual Studio 2015\Projects\Github\PriorityQueue\Priority Queue Tests\bin\Debug\Priority Queue.dll
+C:\Users\Darrell\Documents\Visual Studio 2015\Projects\Github\PriorityQueue\Priority Queue Tests\bin\Debug\Priority Queue.pdb
+C:\Users\Darrell\Documents\Visual Studio 2015\Projects\Github\PriorityQueue\Priority Queue Tests\obj\Debug\Priority Queue Tests.csprojResolveAssemblyReference.cache
+C:\Users\Darrell\Documents\Visual Studio 2015\Projects\Github\PriorityQueue\Priority Queue Tests\obj\Debug\Priority Queue Tests.dll
+C:\Users\Darrell\Documents\Visual Studio 2015\Projects\Github\PriorityQueue\Priority Queue Tests\obj\Debug\Priority Queue Tests.pdb

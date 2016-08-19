@@ -2,7 +2,7 @@
 
 namespace Priority_Queue
 {
-	public class BinaryWrapper<TPQ> : IComparable
+	public class BinaryWrapper<TPQ> : IComparable, IBinaryQueueDeletionElement
 	{
 		public TPQ Attr { get; set; }
 		public int Index { get; set; }

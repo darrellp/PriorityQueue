@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Security.Cryptography;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Priority_Queue;
 
@@ -115,10 +116,10 @@ namespace Priority_Queue_Tests
 		}
 		// ReSharper restore CSharpWarnings::CS1591
 
-		class PQWDElement : IBinaryQueueElement
+		class PQWDElement : IBinaryQueueDeletionElement
 		{
 			#region Private Variables
-			int _i = -1;
+			object _i;
 
 			#endregion
 
@@ -130,20 +131,15 @@ namespace Priority_Queue_Tests
 			{
 				Val = val;
 			}
-			#endregion
+            #endregion
 
-			#region PriorityQueueElement Members
-			int IBinaryQueueElement.Index
-			{
-				get { return _i; }
-				set { _i = value; }
-			}
+            #region PriorityQueueElement Members
+            public int Index { get; set; }
+            #endregion
 
-			#endregion
+            #region IComparable Members
 
-			#region IComparable Members
-
-			int IComparable.CompareTo(object obj)
+             int IComparable.CompareTo(object obj)
 			{
 				if (Val > ((PQWDElement)obj).Val)
 				{
@@ -157,14 +153,22 @@ namespace Priority_Queue_Tests
 			}
 
 			#endregion
+
 		}
 
 		[TestMethod]
-		public void TestMethod1()
+		public void TestManualPQWithDeletions()
 		{
-			//
-			// TODO: Add test logic here
-			//
-		}
-	}
+            var pq = new BinaryQueueWithDeletions<PQWDElement>();
+
+		    var add1 = new PQWDElement(10);
+		    pq.Add(add1);
+            Assert.AreEqual(10, pq.Peek().Val);
+		    var add2 = new PQWDElement(20);
+		    pq.Add(add2);
+            Assert.AreEqual(10, pq.Peek().Val);
+		    pq.Delete(add1);
+            Assert.AreEqual(20, pq.Peek().Val);
+        }
+    }
 }

@@ -86,9 +86,10 @@ namespace Priority_Queue
 
 		public void Delete(object valObj)
 		{
-			var val = valObj as BinaryWrapper<TPQ>;
+			//var val = valObj as BinaryWrapper<TPQ>;
+            var val = valObj as IBinaryQueueDeletionElement;
 
-			if (val == null)
+            if (val == null)
 			{
 				throw new ArgumentException("Invalid type passed to Delete");
 			}

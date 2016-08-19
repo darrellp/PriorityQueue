@@ -11,7 +11,7 @@ namespace Priority_Queue
 	/// <remarks>	Darrellp, 2/17/2011. </remarks>
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	public interface IBinaryQueueElement : IComparable
+	public interface IBinaryQueueDeletionElement : IComparable
 	{
 		///<summary>
 		/// Returns the index stored in SetIndex
