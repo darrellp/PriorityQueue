@@ -87,7 +87,7 @@ namespace Priority_Queue
 		/// <returns>Smallest element in the queue.</returns>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		public TPQ Peek(out bool fNoMin)
+		public virtual TPQ Peek(out bool fNoMin)
 		{
 			// If there are no elements to peek
 			if (LstHeap.Count == 0)
@@ -109,7 +109,7 @@ namespace Priority_Queue
 		/// <remarks>	Darrellp - 6/4/14	</remarks>
 		/// <returns>Smallest element or default(TPQ) if no smallest element.</returns>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		public TPQ Peek()
+		public virtual TPQ Peek()
 		{
 			bool fNoMin;
 			return Peek(out fNoMin);
@@ -157,7 +157,7 @@ namespace Priority_Queue
 		/// <remarks>	Darrellp - 6/4/14	</remarks>
 		/// <returns>Smallest element</returns>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		public TPQ Pop()
+		public virtual TPQ Pop()
 		{
 			bool fNoMin;
 			return Pop(out fNoMin);

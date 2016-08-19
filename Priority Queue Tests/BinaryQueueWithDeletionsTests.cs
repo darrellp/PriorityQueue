@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Security.Cryptography;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Priority_Queue;
 
@@ -13,43 +12,18 @@ namespace Priority_Queue_Tests
 	public class BinaryQueueWithDeletionsTests
 	{
 		[TestMethod]
-		public void TestTemp()
-		{
-			var pq = new BinaryQueueWithDeletionsTyped<int>();
-			pq.Add(30);
-			Assert.AreEqual(30, pq.Peek());
-			var val = pq.Pop();
-			Assert.AreEqual(30, val);
-			var cookie = pq.Add(30);
-			pq.Add(40);
-			pq.Delete(cookie);
-			Assert.AreEqual(1, pq.Count);
-			Assert.AreEqual(40, pq.Peek());
-
-			var pqt = new BinaryQueueWithDeletionsTyped<Pqt<int>>();
-			pqt.AddTyped(30);
-			Assert.AreEqual(30, (int)pqt.Peek());
-			var valt = pqt.Pop();
-			Assert.AreEqual(30, (int)valt);
-			valt = pqt.AddTyped(30);
-			pqt.AddTyped(40);
-			pqt.DeleteTyped(valt);
-			Assert.AreEqual(1, pqt.Count);
-			Assert.AreEqual(40, (int)pqt.Peek());
-		}
-		[TestMethod]
 		public void TestPQWithDeletions()
 		{
-			var pq = new BinaryQueueWithDeletionsTyped<Pqt<int>>();
+			var pq = new BinaryQueueDithDeletionsTyped<int>();
 
-			pq.AddTyped(40);
-			pq.AddTyped(90);
-			pq.AddTyped(20);
-			var pq30 = pq.AddTyped(30);
-			pq.AddTyped(35);
-			pq.AddTyped(50);
-			pq.AddTyped(85);
-			pq.DeleteTyped(pq30);
+			pq.Add(40);
+			pq.Add(90);
+			pq.Add(20);
+			var pq30 = pq.Add(30);
+			pq.Add(35);
+			pq.Add(50);
+			pq.Add(85);
+			pq.Delete(pq30);
 			Assert.IsTrue(pq.FValidate());
 			Assert.AreEqual(6, pq.Count);
 			int cEnums = (pq.ToList()).Count();
@@ -62,56 +36,53 @@ namespace Priority_Queue_Tests
 			pq.Pop();
 			pq.Pop();
 
-			var pq80 = pq.AddTyped(80);
-			Assert.AreEqual(0, ((BinaryWrapper<Pqt<int>>)(pq80.Cookie)).Index);
-			pq.DeleteTyped(pq80);
-			Assert.IsNull(pq80.Cookie);
-
-			pq.AddTyped(80);
-			Assert.AreEqual(80, (int)pq.Peek());
-			pq.AddTyped(90);
+			var pq80 = pq.Add(80);
+			pq.Delete(pq80);
+			pq.Add(80);
+			Assert.AreEqual(80, pq.Peek());
+			pq.Add(90);
 			Assert.AreEqual(2, pq.Count);
-			Assert.AreEqual(80, (int)pq.Peek());
-			Assert.AreEqual(80, (int)pq.Pop());
-			Assert.AreEqual(90, (int)pq.Peek());
-			pq.AddTyped(30);
-			pq.AddTyped(90);
-			pq.AddTyped(85);
-			pq.AddTyped(20);
+			Assert.AreEqual(80, pq.Peek());
+			Assert.AreEqual(80, pq.Pop());
+			Assert.AreEqual(90, pq.Peek());
+			pq.Add(30);
+			pq.Add(90);
+			pq.Add(85);
+			pq.Add(20);
 			// 90, 90, 30, 85, 20
 			Assert.AreEqual(5, pq.Count);
-			Assert.AreEqual(20, (int)pq.Pop());
-			Assert.AreEqual(30, (int)pq.Pop());
+			Assert.AreEqual(20, pq.Pop());
+			Assert.AreEqual(30, pq.Pop());
 			// 90, 90, 85
 			Assert.AreEqual(3, pq.Count);
-			pq.AddTyped(50);
-			pq.AddTyped(35);
+			pq.Add(50);
+			pq.Add(35);
 			// 90, 90, 85, 50, 35
 			Assert.AreEqual(5, pq.Count);
-			Assert.AreEqual(35, (int)pq.Pop());
-			Assert.AreEqual(50, (int)pq.Pop());
-			Assert.AreEqual(85, (int)pq.Pop());
-			Assert.AreEqual(90, (int)pq.Pop());
-			Assert.AreEqual(90, (int)pq.Pop());
+			Assert.AreEqual(35, pq.Pop());
+			Assert.AreEqual(50, pq.Pop());
+			Assert.AreEqual(85, pq.Pop());
+			Assert.AreEqual(90, pq.Pop());
+			Assert.AreEqual(90, pq.Pop());
 			Assert.AreEqual(0, pq.Count);
 
-			pq.AddTyped(35);
-			var pq50 = pq.AddTyped(50);
-			pq.AddTyped(20);
-			pq.AddTyped(85);
-			pq30 = pq.AddTyped(30);
-			pq.AddTyped(90);
-			pq.AddTyped(80);
+			pq.Add(35);
+			var pq50 = pq.Add(50);
+			pq.Add(20);
+			pq.Add(85);
+			pq30 = pq.Add(30);
+			pq.Add(90);
+			pq.Add(80);
 
-			pq.DeleteTyped(pq50);
-			pq.DeleteTyped(pq30);
+			pq.Delete(pq50);
+			pq.Delete(pq30);
 			// 35, 20, 85, 90, 80
 			Assert.AreEqual(5, pq.Count);
-			Assert.AreEqual(20, (int)pq.Pop());
-			Assert.AreEqual(35, (int)pq.Pop());
-			Assert.AreEqual(80, (int)pq.Pop());
-			Assert.AreEqual(85, (int)pq.Pop());
-			Assert.AreEqual(90, (int)pq.Pop());
+			Assert.AreEqual(20, pq.Pop());
+			Assert.AreEqual(35, pq.Pop());
+			Assert.AreEqual(80, pq.Pop());
+			Assert.AreEqual(85, pq.Pop());
+			Assert.AreEqual(90, pq.Pop());
 			Assert.AreEqual(0, pq.Count);
 		}
 		// ReSharper restore CSharpWarnings::CS1591
