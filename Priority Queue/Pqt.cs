@@ -2,9 +2,14 @@
 
 namespace Priority_Queue
 {
-	public interface IHasCookie
+    /// <summary>
+    /// The IHasCookie is very similar to the IPriorityQueueDeletionElement interface.  The
+    /// main difference is that IHasCookie isn't comparable and it stores an object rather than
+    /// an integer.  It's used in our typed objects to store the properly typed 
+    /// </summary>
+	internal interface IHasCookie
 	{
-		object Cookie { get; set; }
+        IBinaryQueueDeletionElement Cookie { get; set; }
 	}
 
 	/// <summary>
@@ -38,7 +43,7 @@ namespace Priority_Queue
 	/// <typeparam name="T">Type of values being stored</typeparam>
 	public class Pqt<T> : IComparable, IHasCookie where T : IComparable
 	{
-		public object Cookie { get; set; }
+		public IBinaryQueueDeletionElement Cookie { get; set; }
 		protected T Value { get; set; }
 
 		protected Pqt()

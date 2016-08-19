@@ -2,8 +2,8 @@
 
 namespace Priority_Queue
 {
-	internal class FibonacciWrapper<TPQ>
-	{
+	internal class FibonacciWrapper<TPQ> : IBinaryQueueDeletionElement
+    {
 		public TPQ Attr { get; set; }
 		public FibonacciWrapper<TPQ> FirstChild { get; set; }
 		public FibonacciWrapper<TPQ> Parent { get; set; }
@@ -57,5 +57,7 @@ namespace Priority_Queue
 		{
 			return "[" + Attr.ToString() + "]";
 		}
-	}
+
+	    public int Index { get; set; }
+    }
 }

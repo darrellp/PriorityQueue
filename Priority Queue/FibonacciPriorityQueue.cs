@@ -486,7 +486,7 @@ namespace Priority_Queue
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		public TPQ AddTyped(TPQ n)
 		{
-			((IHasCookie)n).Cookie = Add(n);
+			((IHasCookie)n).Cookie = (IBinaryQueueDeletionElement)Add(n);
 			return n;
 		}
 

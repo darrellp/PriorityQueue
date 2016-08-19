@@ -15,7 +15,7 @@ namespace Priority_Queue_Tests
 		[TestMethod]
 		public void TestTemp()
 		{
-			var pq = new BinaryQueueWithDeletions<int>();
+			var pq = new BinaryQueueWithDeletionsTyped<int>();
 			pq.Add(30);
 			Assert.AreEqual(30, pq.Peek());
 			var val = pq.Pop();
@@ -26,7 +26,7 @@ namespace Priority_Queue_Tests
 			Assert.AreEqual(1, pq.Count);
 			Assert.AreEqual(40, pq.Peek());
 
-			var pqt = new BinaryQueueWithDeletions<Pqt<int>>();
+			var pqt = new BinaryQueueWithDeletionsTyped<Pqt<int>>();
 			pqt.AddTyped(30);
 			Assert.AreEqual(30, (int)pqt.Peek());
 			var valt = pqt.Pop();
@@ -40,7 +40,7 @@ namespace Priority_Queue_Tests
 		[TestMethod]
 		public void TestPQWithDeletions()
 		{
-			var pq = new BinaryQueueWithDeletions<Pqt<int>>();
+			var pq = new BinaryQueueWithDeletionsTyped<Pqt<int>>();
 
 			pq.AddTyped(40);
 			pq.AddTyped(90);
@@ -118,11 +118,6 @@ namespace Priority_Queue_Tests
 
 		class PQWDElement : IBinaryQueueDeletionElement
 		{
-			#region Private Variables
-			object _i;
-
-			#endregion
-
 			// ReSharper disable once MemberCanBePrivate.Local
 			public int Val { get; set; }
 
@@ -133,7 +128,7 @@ namespace Priority_Queue_Tests
 			}
             #endregion
 
-            #region PriorityQueueElement Members
+            #region PriorityQueueDeletionElement Members
             public int Index { get; set; }
             #endregion
 
@@ -169,6 +164,8 @@ namespace Priority_Queue_Tests
             Assert.AreEqual(10, pq.Peek().Val);
 		    pq.Delete(add1);
             Assert.AreEqual(20, pq.Peek().Val);
-        }
+		    pq.Delete(add2);
+            Assert.AreEqual(0, pq.Count);
+		}
     }
 }

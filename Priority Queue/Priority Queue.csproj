@@ -40,7 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BinaryPriorityQueue.cs" />
-    <Compile Include="BinaryQueueWithDeletions.cs" />
+    <Compile Include="BinaryQueueWithDeletionsTyped.cs" />
     <Compile Include="BinaryWrapper.cs" />
     <Compile Include="FibonacciWrapper.cs" />
     <Compile Include="FibonacciPriorityQueue.cs" />
