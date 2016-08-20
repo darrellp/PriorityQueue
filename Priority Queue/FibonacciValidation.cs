@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Priority_Queue
 {
-	public static class FibonacciValidation<TPQ>
+	public static class FibonacciValidation<BaseType>
 	{
 		// ReSharper disable once StaticFieldInGenericType
 		internal static int ElementCount;
@@ -15,7 +15,7 @@ namespace Priority_Queue
 			return false;
 		}
 
-		internal static bool IsParentValid(FibonacciWrapper<TPQ> parent)
+		internal static bool IsParentValid(FibonacciWrapper<BaseType> parent)
 		{
 			if (parent == null)
 			{
@@ -27,10 +27,10 @@ namespace Priority_Queue
 				return False();
 			}
 
-			return FibonacciPriorityQueue<TPQ>.EnumerateLinkedList(parent.FirstChild).All(elm => IsParentValid(elm) && elm.CompareTo(parent) >= 0) || False();
+			return FibonacciPriorityQueue<BaseType>.EnumerateLinkedList(parent.FirstChild).All(elm => IsParentValid(elm) && elm.CompareTo(parent) >= 0) || False();
 		}
 
-		internal static bool IsLinkedListValid(FibonacciWrapper<TPQ> list)
+		internal static bool IsLinkedListValid(FibonacciWrapper<BaseType> list)
 		{
 			if (list == null)
 			{
@@ -39,7 +39,7 @@ namespace Priority_Queue
 			var cur = list;
 			var nextSibling = list.RightSibling;
 
-			var vals = new HashSet<FibonacciWrapper<TPQ>>();
+			var vals = new HashSet<FibonacciWrapper<BaseType>>();
 			while (true)
 			{
 				if (vals.Contains(cur))

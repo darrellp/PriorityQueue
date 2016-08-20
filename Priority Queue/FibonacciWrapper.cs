@@ -2,19 +2,19 @@
 
 namespace Priority_Queue
 {
-	internal class FibonacciWrapper<TPQ> : IBinaryQueueDeletionElement
+	internal class FibonacciWrapper<BaseType> : IBinaryQueueDeletionElement
     {
-		public TPQ Attr { get; set; }
-		public FibonacciWrapper<TPQ> FirstChild { get; set; }
-		public FibonacciWrapper<TPQ> Parent { get; set; }
-		public FibonacciWrapper<TPQ> LeftSibling { get; set; }
-		public FibonacciWrapper<TPQ> RightSibling { get; set; }
+		public BaseType Attr { get; set; }
+		public FibonacciWrapper<BaseType> FirstChild { get; set; }
+		public FibonacciWrapper<BaseType> Parent { get; set; }
+		public FibonacciWrapper<BaseType> LeftSibling { get; set; }
+		public FibonacciWrapper<BaseType> RightSibling { get; set; }
 		public int Degree { get; set; }
 		public bool Marked { get; set; }
-		private readonly Func<TPQ, TPQ, int> _compare;
+		private readonly Func<BaseType, BaseType, int> _compare;
 		internal bool InfinitelyNegative { get; set; }
 
-		public FibonacciWrapper(TPQ attr, Func<TPQ, TPQ, int> compare = null)
+		public FibonacciWrapper(BaseType attr, Func<BaseType, BaseType, int> compare = null)
 		{
 			Attr = attr;
 			Degree = 0;
@@ -28,7 +28,7 @@ namespace Priority_Queue
 
 		public int CompareTo(object obj)
 		{
-			var otherWrapper = obj as FibonacciWrapper<TPQ>;
+			var otherWrapper = obj as FibonacciWrapper<BaseType>;
 
 			// Infinitely negative values are always smaller than other values
 			if (InfinitelyNegative)

@@ -44,7 +44,7 @@ namespace Priority_Queue
         ///  Peeks at the smallest element without removing it.
         /// </summary>
         /// <remarks>	Darrellp - 6/4/14	</remarks>
-        /// <returns>Smallest element or default(TPQ) if no smallest element.</returns>
+        /// <returns>Smallest element or default(BaseType) if no smallest element.</returns>
         ////////////////////////////////////////////////////////////////////////////////////////////////////
         public new BaseType Peek()
         {

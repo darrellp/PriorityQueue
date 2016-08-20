@@ -6,11 +6,11 @@ using System.Linq;
 
 namespace Priority_Queue
 {
-	public class FibonacciPriorityQueue<TPQ> : IEnumerable<TPQ>
+	public class FibonacciPriorityQueue<BaseType> : IEnumerable<BaseType>
 	{
 		#region Private Variables
-		private FibonacciWrapper<TPQ> _min;
-		private Func<TPQ, TPQ, int> _compare;
+		private FibonacciWrapper<BaseType> _min;
+		private Func<BaseType, BaseType, int> _compare;
 		#endregion
 
 		#region Properties
@@ -21,7 +21,7 @@ namespace Priority_Queue
 		#endregion
 
 		#region Constructor
-		public FibonacciPriorityQueue(Func<TPQ, TPQ, int> compare = null)
+		public FibonacciPriorityQueue(Func<BaseType, BaseType, int> compare = null)
 		{
 			Count = 0;
 			_compare = compare;
@@ -29,17 +29,17 @@ namespace Priority_Queue
 		#endregion
 
 		#region Utility functions
-		static bool IsSingleTon(FibonacciWrapper<TPQ> element)
+		static bool IsSingleTon(FibonacciWrapper<BaseType> element)
 		{
 			return ReferenceEquals(element, element.RightSibling);
 		}
 
-		static bool IsSingletonOrUnattached(FibonacciWrapper<TPQ> element)
+		static bool IsSingletonOrUnattached(FibonacciWrapper<BaseType> element)
 		{
 			return element.RightSibling == null || IsSingleTon(element);
 		}
 
-		static FibonacciWrapper<TPQ> CombineLists(FibonacciWrapper<TPQ> list1, FibonacciWrapper<TPQ> list2)
+		static FibonacciWrapper<BaseType> CombineLists(FibonacciWrapper<BaseType> list1, FibonacciWrapper<BaseType> list2)
 		{
 			if (list1 == null)
 			{
@@ -59,7 +59,7 @@ namespace Priority_Queue
 			return list1;
 		}
 
-		internal static IEnumerable<FibonacciWrapper<TPQ>> EnumerateLinkedList(FibonacciWrapper<TPQ> list)
+		internal static IEnumerable<FibonacciWrapper<BaseType>> EnumerateLinkedList(FibonacciWrapper<BaseType> list)
 		{
 			if (list == null)
 			{
@@ -80,7 +80,7 @@ namespace Priority_Queue
 			} while (!ReferenceEquals(cur, list));
 		}
 
-		private static FibonacciWrapper<TPQ> RemoveFromList(FibonacciWrapper<TPQ> element)
+		private static FibonacciWrapper<BaseType> RemoveFromList(FibonacciWrapper<BaseType> element)
 		{
 			if (IsSingletonOrUnattached(element))
 			{
@@ -99,7 +99,7 @@ namespace Priority_Queue
 
 		private void Consolidate()
 		{
-			var degreeToRoot = new FibonacciWrapper<TPQ>[64];
+			var degreeToRoot = new FibonacciWrapper<BaseType>[64];
 			var rootList = EnumerateLinkedList(_min).ToList();
 
 			foreach (var element in rootList)
@@ -139,7 +139,7 @@ namespace Priority_Queue
 			}
 		}
 
-		private void HeapLink(FibonacciWrapper<TPQ> newChild, FibonacciWrapper<TPQ> newParent)
+		private void HeapLink(FibonacciWrapper<BaseType> newChild, FibonacciWrapper<BaseType> newParent)
 		{
 			RemoveFromList(newChild);
 			if (newParent.FirstChild == null)
@@ -155,7 +155,7 @@ namespace Priority_Queue
 			newChild.Parent = newParent;
 		}
 
-		private void CascadingCut(FibonacciWrapper<TPQ> element)
+		private void CascadingCut(FibonacciWrapper<BaseType> element)
 		{
 			var parent = element.Parent;
 			if (parent != null)
@@ -172,7 +172,7 @@ namespace Priority_Queue
 			}
 		}
 
-		private void Cut(FibonacciWrapper<TPQ> element, FibonacciWrapper<TPQ> parent)
+		private void Cut(FibonacciWrapper<BaseType> element, FibonacciWrapper<BaseType> parent)
 		{
 			if (ReferenceEquals(parent.FirstChild, element))
 			{
@@ -189,16 +189,16 @@ namespace Priority_Queue
 		#region Validation
 
 		[Conditional("DEBUG")]
-		private static void ThrowBadList(FibonacciWrapper<TPQ> list)
+		private static void ThrowBadList(FibonacciWrapper<BaseType> list)
 		{
-			if (!FibonacciValidation<TPQ>.IsLinkedListValid(list))
+			if (!FibonacciValidation<BaseType>.IsLinkedListValid(list))
 			{
 				throw new InvalidOperationException("Bad list");
 			}
 		}
 
 		[Conditional("DEBUG")]
-		private static void ThrowBadFpq(FibonacciPriorityQueue<TPQ> fpq)
+		private static void ThrowBadFpq(FibonacciPriorityQueue<BaseType> fpq)
 		{
 			if (!fpq.Validate())
 			{
@@ -216,18 +216,18 @@ namespace Priority_Queue
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		public bool Validate()
 		{
-			FibonacciValidation<TPQ>.ElementCount = 0;
-			if (!FibonacciValidation<TPQ>.IsLinkedListValid(_min))
+			FibonacciValidation<BaseType>.ElementCount = 0;
+			if (!FibonacciValidation<BaseType>.IsLinkedListValid(_min))
 			{
-				return FibonacciValidation<TPQ>.False();
+				return FibonacciValidation<BaseType>.False();
 			}
-			if (EnumerateLinkedList(_min).Any(parent => !FibonacciValidation<TPQ>.IsParentValid(parent)))
+			if (EnumerateLinkedList(_min).Any(parent => !FibonacciValidation<BaseType>.IsParentValid(parent)))
 			{
-				return FibonacciValidation<TPQ>.False();
+				return FibonacciValidation<BaseType>.False();
 			}
-			if (FibonacciValidation<TPQ>.ElementCount != Count)
+			if (FibonacciValidation<BaseType>.ElementCount != Count)
 			{
-				return FibonacciValidation<TPQ>.False();
+				return FibonacciValidation<BaseType>.False();
 			}
 			return true;
 		}
@@ -241,7 +241,7 @@ namespace Priority_Queue
 		/// <remarks>	Darrellp, 2/17/2011.	</remarks>
 		/// <param name="val">Value to insert.</param>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		private void AddWrapper(FibonacciWrapper<TPQ> val)
+		private void AddWrapper(FibonacciWrapper<BaseType> val)
 		{
 			if (_min == null)
 			{
@@ -261,15 +261,15 @@ namespace Priority_Queue
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>
-		///  Insert a value into the priority queue of type TPQ.
+		///  Insert a value into the priority queue of type BaseType.
 		/// </summary>
 		/// <remarks>	Darrellp, 2/17/2011.	</remarks>
 		/// <param name="attr">Value to insert.</param>
 		/// <returns>Cookie to use to reference the object later</returns>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		public Object Add(TPQ attr)
+		public Object Add(BaseType attr)
 		{
-			var wrapper = new FibonacciWrapper<TPQ>(attr, _compare);
+			var wrapper = new FibonacciWrapper<BaseType>(attr, _compare);
 			AddWrapper(wrapper);
 			return wrapper;
 		}
@@ -282,9 +282,9 @@ namespace Priority_Queue
 		/// <param name="heap">The heap to be unioned in.</param>
 		/// <returns>Union of the two heaps</returns>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		public FibonacciPriorityQueue<TPQ> Union(FibonacciPriorityQueue<TPQ> heap)
+		public FibonacciPriorityQueue<BaseType> Union(FibonacciPriorityQueue<BaseType> heap)
 		{
-			var ret = new FibonacciPriorityQueue<TPQ>();
+			var ret = new FibonacciPriorityQueue<BaseType>();
 			var ourMin = _min;
 			var theirMin = heap._min;
 
@@ -303,15 +303,15 @@ namespace Priority_Queue
 		/// </summary>
 		/// <remarks>	Darrellp - 6/1/14	</remarks>
 		/// <param name="fNoMin">No current minimum if set to <c>true</c>.</param>
-		/// <returns> Minimum value of type TPQ.</returns>
+		/// <returns> Minimum value of type BaseType.</returns>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		public TPQ Pop(out bool fNoMin)
+		public BaseType Pop(out bool fNoMin)
 		{
 			var ret = _min;
 			if (_min == null)
 			{
 				fNoMin = true;
-				return default(TPQ);
+				return default(BaseType);
 			}
 
 			fNoMin = false;
@@ -333,17 +333,17 @@ namespace Priority_Queue
 				Consolidate();
 			}
 			Count--;
-			return ret == null? default(TPQ) : ret.Attr;
+			return ret == null? default(BaseType) : ret.Attr;
 		}
 
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>
-		///  Extracts and deletes the minimum value from the priority queue.
-		/// </summary>
-		/// <remarks>	Darrellp - 6/1/14	</remarks>
-		/// <returns> Minimum value of type TPQ - TPQ's default if there is no current minimum.</returns>
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		public TPQ Pop()
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        ///  Extracts and deletes the minimum value from the priority queue.
+        /// </summary>
+        /// <remarks>	Darrellp - 6/1/14	</remarks>
+        /// <returns> Minimum value of type BaseType - BaseType's default if there is no current minimum.</returns>
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        public BaseType Pop()
 		{
 			bool fNoMin;
 			var ret = Pop(out fNoMin);
@@ -351,29 +351,29 @@ namespace Priority_Queue
 			return ret;
 		}
 
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>
-		///  Peeks at the min element without deleting it.
-		/// </summary>
-		/// <remarks>	Darrellp - 6/1/14	</remarks>
-		/// <param name="fNoMin">No minimum if set to <c>true</c>.</param>
-		/// <returns>Smallest element in queue or default(TPQ) if no smallest element.</returns>
-		/// <exception cref="System.IndexOutOfRangeException">Peeking at an empty priority queue</exception>
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		public TPQ Peek(out bool fNoMin)
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        ///  Peeks at the min element without deleting it.
+        /// </summary>
+        /// <remarks>	Darrellp - 6/1/14	</remarks>
+        /// <param name="fNoMin">No minimum if set to <c>true</c>.</param>
+        /// <returns>Smallest element in queue or default(BaseType) if no smallest element.</returns>
+        /// <exception cref="System.IndexOutOfRangeException">Peeking at an empty priority queue</exception>
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        public BaseType Peek(out bool fNoMin)
 		{
 			fNoMin = _min == null;
-			return fNoMin ? default(TPQ) : _min.Attr;
+			return fNoMin ? default(BaseType) : _min.Attr;
 		}
 
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>
-		///  Peeks at the min element without deleting it.
-		/// </summary>
-		/// <remarks> This is just a convenience routine  - Darrellp - 6/1/14	</remarks>
-		/// <returns>Smallest element in queue or default(TPQ) if no smallest element.</returns>
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		public TPQ Peek()
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        ///  Peeks at the min element without deleting it.
+        /// </summary>
+        /// <remarks> This is just a convenience routine  - Darrellp - 6/1/14	</remarks>
+        /// <returns>Smallest element in queue or default(BaseType) if no smallest element.</returns>
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        public BaseType Peek()
 		{
 			bool fNoMin;
 			return Peek(out fNoMin);
@@ -389,7 +389,7 @@ namespace Priority_Queue
 		/// </remarks>
 		/// <param name="element">The element.</param>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		private void PlaceElement(FibonacciWrapper<TPQ> element)
+		private void PlaceElement(FibonacciWrapper<BaseType> element)
 		{
 			var parent = element.Parent;
 			if (parent != null && parent.CompareTo(element) > 0)
@@ -416,9 +416,9 @@ namespace Priority_Queue
 		/// Key value passed to DecreaseKey greater than current value
 		/// </exception>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		public void DecreaseKey(object xObj, TPQ newValue)
+		public void DecreaseKey(object xObj, BaseType newValue)
 		{
-			var element = xObj as FibonacciWrapper<TPQ>;
+			var element = xObj as FibonacciWrapper<BaseType>;
 			if (element == null)
 			{
 				throw new ArgumentException("DecreaseKey recieved invalid cookie");
@@ -436,7 +436,7 @@ namespace Priority_Queue
 
 				if (icmp == null)
 				{
-					throw new InvalidOperationException("_compare needs to be set of TPQ needs to be of type IComparable");
+					throw new InvalidOperationException("_compare needs to be set of BaseType needs to be of type IComparable");
 				}
 				cmp = icmp.CompareTo(newValue);
 			}
@@ -462,7 +462,7 @@ namespace Priority_Queue
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		public void Delete(object xObj)
 		{
-			var element = xObj as FibonacciWrapper<TPQ>;
+			var element = xObj as FibonacciWrapper<BaseType>;
 			if (element == null)
 			{
 				throw new ArgumentException("Delete recieved invalid cookie");
@@ -484,7 +484,7 @@ namespace Priority_Queue
 		/// <param name="n">The typed input to add.</param>
 		/// <returns>Typed input with cookie properly set.</returns>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		public TPQ AddTyped(TPQ n)
+		public BaseType AddTyped(BaseType n)
 		{
 			((IHasCookie)n).Cookie = (IBinaryQueueDeletionElement)Add(n);
 			return n;
@@ -497,7 +497,7 @@ namespace Priority_Queue
 		/// <remarks>	Darrellp - 6/4/14	</remarks>
 		/// <param name="value">The value to be deleted.</param>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		public void DeleteTyped(TPQ value)
+		public void DeleteTyped(BaseType value)
 		{
 			Delete(((IHasCookie)value).Cookie);
 		}
@@ -510,7 +510,7 @@ namespace Priority_Queue
 		/// <param name="oldValue">The old value.</param>
 		/// <param name="newValue">The new value.</param>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		public void DecreaseKeyTyped(TPQ oldValue, TPQ newValue)
+		public void DecreaseKeyTyped(BaseType oldValue, BaseType newValue)
 		{
 			((IHasCookie)newValue).Cookie = ((IHasCookie)oldValue).Cookie;
 			DecreaseKey(((IHasCookie)oldValue).Cookie, newValue);
@@ -519,9 +519,9 @@ namespace Priority_Queue
 		#endregion
 
 		#region IEnumerable members
-		protected IEnumerator<TPQ> GetEnumerator()
+		protected IEnumerator<BaseType> GetEnumerator()
 		{
-			var returns = new Stack<FibonacciWrapper<TPQ>>();
+			var returns = new Stack<FibonacciWrapper<BaseType>>();
 			var cur = _min;
 
 			while (true)
@@ -540,7 +540,7 @@ namespace Priority_Queue
 			}
 		}
 
-		IEnumerator<TPQ> IEnumerable<TPQ>.GetEnumerator()
+		IEnumerator<BaseType> IEnumerable<BaseType>.GetEnumerator()
 		{
 			return GetEnumerator();
 		}

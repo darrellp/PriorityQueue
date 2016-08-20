@@ -2,13 +2,13 @@
 
 namespace Priority_Queue
 {
-	public class BinaryWrapper<TPQ> : IComparable, IBinaryQueueDeletionElement
+	public class BinaryWrapper<BaseType> : IComparable, IBinaryQueueDeletionElement
 	{
-		public TPQ Attr { get; set; }
+		public BaseType Attr { get; set; }
 		public int Index { get; set; }
-		private readonly Func<TPQ, TPQ, int> _compare;
+		private readonly Func<BaseType, BaseType, int> _compare;
 
-		public BinaryWrapper(TPQ attr, Func<TPQ, TPQ, int> compare = null)
+		public BinaryWrapper(BaseType attr, Func<BaseType, BaseType, int> compare = null)
 		{
 			Attr = attr;
 			Index = -1;
@@ -17,10 +17,10 @@ namespace Priority_Queue
 
 		public int CompareTo(object obj)
 		{
-			var otherWrapper = obj as BinaryWrapper<TPQ>;
+			var otherWrapper = obj as BinaryWrapper<BaseType>;
 			if (otherWrapper == null)
 			{
-				throw new ArgumentException("Different types in FibonacciWrapper<TPQ>.CompareTo()");
+				throw new ArgumentException("Different types in FibonacciWrapper<BaseType>.CompareTo()");
 			}
 			if (_compare != null)
 			{

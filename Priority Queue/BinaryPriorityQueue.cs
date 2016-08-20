@@ -12,7 +12,7 @@ namespace Priority_Queue
 	/// <remarks>	Darrellp, 2/17/2011. </remarks>
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	public class BinaryPriorityQueue<TPQ> : IEnumerable<TPQ>
+	public class BinaryPriorityQueue<BaseType> : IEnumerable<BaseType>
 	{
 		#region Private Variables
 		/// <summary>
@@ -20,8 +20,8 @@ namespace Priority_Queue
 		/// to everything I learned about the terms "array" and "list", but that's nonetheless the way
 		/// they're implemented in the CLR Framework.
 		/// </summary>
-		protected readonly List<TPQ> LstHeap = new List<TPQ>();
-		private readonly Func<TPQ, TPQ, int> _compare; 
+		protected readonly List<BaseType> LstHeap = new List<BaseType>();
+		private readonly Func<BaseType, BaseType, int> _compare; 
 		#endregion
 
 		#region Properties
@@ -35,22 +35,22 @@ namespace Priority_Queue
 		#endregion
 
 		#region Constructor
-		public BinaryPriorityQueue(Func<TPQ, TPQ, int> compare = null)
+		public BinaryPriorityQueue(Func<BaseType, BaseType, int> compare = null)
 		{
 			_compare = compare;
 		}
 		#endregion
 
 		#region Comparison
-		private int Compare(TPQ tpq1, TPQ tpq2)
+		private int Compare(BaseType baseType1, BaseType baseType2)
 		{
 			if (_compare != null)
 			{
-				return _compare(tpq1, tpq2);
+				return _compare(baseType1, baseType2);
 			}
 
-			var cmp1 = tpq1 as IComparable;
-			var cmp2 = tpq2 as IComparable;
+			var cmp1 = baseType1 as IComparable;
+			var cmp2 = baseType2 as IComparable;
 			if (cmp1 == null || cmp2 == null)
 			{
 				throw new InvalidOperationException("No comparison function and Attrs are not IComparable");
@@ -68,7 +68,7 @@ namespace Priority_Queue
 		/// <param name="val">	Value to insert. </param>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		public void Add(TPQ val)
+		public void Add(BaseType val)
 		{
 			// Add the new element to the end of the list
 			LstHeap.Add(val);
@@ -87,13 +87,13 @@ namespace Priority_Queue
 		/// <returns>Smallest element in the queue.</returns>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		public virtual TPQ Peek(out bool fNoMin)
+		public virtual BaseType Peek(out bool fNoMin)
 		{
 			// If there are no elements to peek
 			if (LstHeap.Count == 0)
 			{
 				fNoMin = true;
-				return default(TPQ);
+				return default(BaseType);
 			}
 
 			// Otherwise, the root is our smallest element
@@ -102,14 +102,14 @@ namespace Priority_Queue
 			return LstHeap[0];
 		}
 
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>
-		///  Peeks at the smallest element without removing it.
-		/// </summary>
-		/// <remarks>	Darrellp - 6/4/14	</remarks>
-		/// <returns>Smallest element or default(TPQ) if no smallest element.</returns>
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		public virtual TPQ Peek()
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        ///  Peeks at the smallest element without removing it.
+        /// </summary>
+        /// <remarks>	Darrellp - 6/4/14	</remarks>
+        /// <returns>Smallest element or default(BaseType) if no smallest element.</returns>
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        public virtual BaseType Peek()
 		{
 			bool fNoMin;
 			return Peek(out fNoMin);
@@ -122,7 +122,7 @@ namespace Priority_Queue
 		/// <returns>	Smallest element. </returns>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		public virtual TPQ Pop(out bool fNoMin)
+		public virtual BaseType Pop(out bool fNoMin)
 		{
 			fNoMin = false;
 
@@ -130,7 +130,7 @@ namespace Priority_Queue
 			if (LstHeap.Count == 0)
 			{
 				fNoMin = true;
-				return default(TPQ);
+				return default(BaseType);
 			}
 
 			// Save away the max value in the heap
@@ -157,7 +157,7 @@ namespace Priority_Queue
 		/// <remarks>	Darrellp - 6/4/14	</remarks>
 		/// <returns>Smallest element</returns>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		public virtual TPQ Pop()
+		public virtual BaseType Pop()
 		{
 			bool fNoMin;
 			return Pop(out fNoMin);
@@ -178,7 +178,7 @@ namespace Priority_Queue
 		/// <param name="val">	The value to be set. </param>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		protected virtual void SetAt(int i, TPQ val)
+		protected virtual void SetAt(int i, BaseType val)
 		{
 			LstHeap[i] = val;
 		}
@@ -271,7 +271,7 @@ namespace Priority_Queue
 		/// <returns>	Array value at i. </returns>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		protected TPQ ArrayVal(int i)
+		protected BaseType ArrayVal(int i)
 		{
 			return LstHeap[i];
 		}
@@ -286,7 +286,7 @@ namespace Priority_Queue
 		/// <returns>	The parent. </returns>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		protected TPQ Parent(int i)
+		protected BaseType Parent(int i)
 		{
 			return LstHeap[ParentIndex(i)];
 		}
@@ -301,7 +301,7 @@ namespace Priority_Queue
 		/// <returns>	The left child. </returns>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		protected TPQ Left(int i)
+		protected BaseType Left(int i)
 		{
 			return LstHeap[LeftChildIndex(i)];
 		}
@@ -316,7 +316,7 @@ namespace Priority_Queue
 		/// <returns>	The right child. </returns>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		protected TPQ Right(int i)
+		protected BaseType Right(int i)
 		{
 			return LstHeap[RightChildIndex(i)];
 		}
@@ -451,12 +451,12 @@ namespace Priority_Queue
 		/// <returns>	The enumerator. </returns>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		protected IEnumerator<TPQ> GetEnumerator()
+		protected IEnumerator<BaseType> GetEnumerator()
 		{
 			return LstHeap.GetEnumerator();
 		}
 
-		IEnumerator<TPQ> IEnumerable<TPQ>.GetEnumerator()
+		IEnumerator<BaseType> IEnumerable<BaseType>.GetEnumerator()
 		{
 			return GetEnumerator();
 		}
