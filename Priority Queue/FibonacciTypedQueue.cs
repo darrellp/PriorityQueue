@@ -8,7 +8,7 @@ namespace Priority_Queue
 
         public new Pqt<BaseType> Add(Pqt<BaseType> value)
         {
-            value.Cookie = (ILocatable)base.Add(value);
+            value.Cookie = base.Add(value);
             return value;
         }
 

@@ -2,7 +2,7 @@
 
 namespace Priority_Queue
 {
-	internal class FibonacciWrapper<BaseType> : ILocatable
+	internal class FibonacciWrapper<BaseType>
     {
 		public BaseType Attr { get; set; }
 		public FibonacciWrapper<BaseType> FirstChild { get; set; }

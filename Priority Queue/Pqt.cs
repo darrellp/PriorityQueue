@@ -9,7 +9,7 @@ namespace Priority_Queue
     /// </summary>
 	internal interface IHasCookie
 	{
-        ILocatable Cookie { get; set; }
+        Object Cookie { get; set; }
 	}
 
     /// <summary>
@@ -45,7 +45,7 @@ namespace Priority_Queue
     /// <typeparam name="T">Type of values being stored</typeparam>
     public class Pqt<T> : IComparable, IHasCookie where T : IComparable
 	{
-		public ILocatable Cookie { get; set; }
+		public Object Cookie { get; set; }
 		protected T Value { get; set; }
 
 		protected Pqt()
