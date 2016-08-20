@@ -6,6 +6,7 @@ using System.Linq;
 
 namespace Priority_Queue
 {
+    // ReSharper disable once InconsistentNaming
 	public class FibonacciPriorityQueue<BaseType> : IEnumerable<BaseType>
 	{
 		#region Private Variables
@@ -267,7 +268,7 @@ namespace Priority_Queue
 		/// <param name="attr">Value to insert.</param>
 		/// <returns>Cookie to use to reference the object later</returns>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		public Object Add(BaseType attr)
+		public virtual Object Add(BaseType attr)
 		{
 			var wrapper = new FibonacciWrapper<BaseType>(attr, _compare);
 			AddWrapper(wrapper);
@@ -471,51 +472,6 @@ namespace Priority_Queue
 			PlaceElement(element);
 			Pop();
 		}
-		#endregion
-
-		#region Typed Input
-		// See fpqt.cs for more info on typed input
-
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>
-		///  Adds a typed input value.
-		/// </summary>
-		/// <remarks>	Darrellp - 6/4/14	</remarks>
-		/// <param name="n">The typed input to add.</param>
-		/// <returns>Typed input with cookie properly set.</returns>
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		public BaseType AddTyped(BaseType n)
-		{
-			((IHasCookie)n).Cookie = (IBinaryQueueDeletionElement)Add(n);
-			return n;
-		}
-
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>
-		///  Deletes the typed input value.
-		/// </summary>
-		/// <remarks>	Darrellp - 6/4/14	</remarks>
-		/// <param name="value">The value to be deleted.</param>
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		public void DeleteTyped(BaseType value)
-		{
-			Delete(((IHasCookie)value).Cookie);
-		}
-
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>
-		///  Decreases the key for the typed input.
-		/// </summary>
-		/// <remarks>	Darrellp - 6/4/14	</remarks>
-		/// <param name="oldValue">The old value.</param>
-		/// <param name="newValue">The new value.</param>
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		public void DecreaseKeyTyped(BaseType oldValue, BaseType newValue)
-		{
-			((IHasCookie)newValue).Cookie = ((IHasCookie)oldValue).Cookie;
-			DecreaseKey(((IHasCookie)oldValue).Cookie, newValue);
-		}
-
 		#endregion
 
 		#region IEnumerable members

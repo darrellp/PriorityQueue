@@ -16,7 +16,7 @@ namespace Priority_Queue
     /// </remarks>
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public class BinaryQueueWithDeletions<BaseType> : BinaryPriorityQueue<BaseType> where BaseType : class, IComparable, IBinaryQueueDeletionElement
+    public class BinaryQueueWithDeletions<BaseType> : BinaryPriorityQueue<BaseType> where BaseType : class, IComparable, ILocatable
     {
         #region Public overrides
 

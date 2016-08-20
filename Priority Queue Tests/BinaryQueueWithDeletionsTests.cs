@@ -92,7 +92,7 @@ namespace Priority_Queue_Tests
 		}
 		// ReSharper restore CSharpWarnings::CS1591
 
-		class PQWDElement : IBinaryQueueDeletionElement
+		class PQWDElement : ILocatable
 		{
 			// ReSharper disable once MemberCanBePrivate.Local
 			public int Val { get; set; }

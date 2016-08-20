@@ -17,7 +17,7 @@ namespace Priority_Queue
         public new BaseType Pop(out bool fNoMin)
         {
             var valRet = base.Pop(out fNoMin);
-            return fNoMin ? default(BaseType) : valRet.Attr;
+            return fNoMin ? default(BaseType) : valRet.Value;
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -36,7 +36,7 @@ namespace Priority_Queue
         public new BaseType Peek(out bool fNoMin)
         {
             var valRet = base.Peek(out fNoMin);
-            return fNoMin ? default(BaseType) : valRet.Attr;
+            return fNoMin ? default(BaseType) : valRet.Value;
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////

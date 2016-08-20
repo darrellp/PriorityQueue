@@ -9,11 +9,11 @@ namespace Priority_Queue
     /// </summary>
 	internal interface IHasCookie
 	{
-        IBinaryQueueDeletionElement Cookie { get; set; }
+        ILocatable Cookie { get; set; }
 	}
 
     /// <summary>
-    /// Class Pqt for typed arguments to the Fibonacci queue
+    /// Class Pqt to create typed arguments for the Fibonacci queue
     /// </summary>
     /// <remarks>
     /// The priority queues are great as stands but require the user to keep track of
@@ -39,11 +39,13 @@ namespace Priority_Queue
     /// argument of AreEqual will coerce it to convert the BaseType returned from Pop() to an integer.
     /// The proper thing to do here is just
     ///		Assert.AreEqual(10, (int)fpq.Pop());
+    /// On the other hand, an assignment statement or somewhere which will naturally coerce the
+    /// return from Pop to an integer will work just fine.
     /// </remarks>
     /// <typeparam name="T">Type of values being stored</typeparam>
     public class Pqt<T> : IComparable, IHasCookie where T : IComparable
 	{
-		public IBinaryQueueDeletionElement Cookie { get; set; }
+		public ILocatable Cookie { get; set; }
 		protected T Value { get; set; }
 
 		protected Pqt()
