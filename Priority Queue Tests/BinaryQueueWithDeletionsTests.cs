@@ -14,7 +14,12 @@ namespace Priority_Queue_Tests
 		[TestMethod]
 		public void TestPQWithDeletions()
 		{
-			var pq = new BinaryQueueDithDeletionsTyped<int>();
+            // BinaryQueueDithDeletionsTyped puts a wrapper around each newly
+            // added item and returns the wrapper in Add().  This slows things
+            // down a teeny bit and requires you to keep track of the wrapper
+            // separately from the added object but also means you don't have
+            // to implement IBinaryDeletionElement on the added objects.
+            var pq = new BinaryQueueDithDeletionsTyped<int>();
 
 			pq.Add(40);
 			pq.Add(90);
@@ -125,6 +130,11 @@ namespace Priority_Queue_Tests
 		[TestMethod]
 		public void TestManualPQWithDeletions()
 		{
+            // In contrast to BinaryQueueWithDeletionsTyped,
+            // BinaryQueueWithDeletions requires all added elements to 
+            // implement IBinaryQueueDeletionElement.  This is a little
+            // faster and means you don't have to keep track of a 
+            // separate wrapper in order to remove things from the queue.
             var pq = new BinaryQueueWithDeletions<PQWDElement>();
 
 		    var add1 = new PQWDElement(10);
