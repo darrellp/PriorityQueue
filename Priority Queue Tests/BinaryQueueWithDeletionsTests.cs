@@ -14,7 +14,9 @@ namespace Priority_Queue_Tests
 		[TestMethod]
 		public void TestPQWithDeletions()
 		{
-			var pq = new BinaryQueueDithDeletionsTyped<int>();
+            // BinaryQueueDithDeletionsTyped will wrap the object for you and return the wrapper so
+            // your type doesn't have to implement IBinaryQueueDeletionElement
+            var pq = new BinaryQueueDithDeletionsTyped<int>();
 
 			pq.Add(40);
 			pq.Add(90);
@@ -125,6 +127,10 @@ namespace Priority_Queue_Tests
 		[TestMethod]
 		public void TestManualPQWithDeletions()
 		{
+            // BinaryQueueWithDeletions requires the objects passed to it
+            // to implement IBinaryQueueDeletionElement.  This is a little faster
+            // than BinaryQueueWithDeletionsTyped but a little more trouble
+            // and won't work with integers, strings, etc..
             var pq = new BinaryQueueWithDeletions<PQWDElement>();
 
 		    var add1 = new PQWDElement(10);

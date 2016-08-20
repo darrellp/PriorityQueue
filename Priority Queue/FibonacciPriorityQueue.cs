@@ -481,13 +481,13 @@ namespace Priority_Queue
 		///  Adds a typed input value.
 		/// </summary>
 		/// <remarks>	Darrellp - 6/4/14	</remarks>
-		/// <param name="n">The typed input to add.</param>
+		/// <param name="value">The typed input to add.</param>
 		/// <returns>Typed input with cookie properly set.</returns>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		public BaseType AddTyped(BaseType n)
+		public BaseType AddTyped(BaseType value)
 		{
-			((IHasCookie)n).Cookie = (IBinaryQueueDeletionElement)Add(n);
-			return n;
+			((IHasCookie<FibonacciWrapper<BaseType>>)value).Cookie = (FibonacciWrapper < BaseType > )Add(value);
+			return value;
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -499,21 +499,21 @@ namespace Priority_Queue
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		public void DeleteTyped(BaseType value)
 		{
-			Delete(((IHasCookie)value).Cookie);
-		}
+			Delete(((IHasCookie<FibonacciWrapper<BaseType>>)value).Cookie);
+        }
 
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>
-		///  Decreases the key for the typed input.
-		/// </summary>
-		/// <remarks>	Darrellp - 6/4/14	</remarks>
-		/// <param name="oldValue">The old value.</param>
-		/// <param name="newValue">The new value.</param>
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		public void DecreaseKeyTyped(BaseType oldValue, BaseType newValue)
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        ///  Decreases the key for the typed input.
+        /// </summary>
+        /// <remarks>	Darrellp - 6/4/14	</remarks>
+        /// <param name="oldValue">The old value.</param>
+        /// <param name="newValue">The new value.</param>
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        public void DecreaseKeyTyped(BaseType oldValue, BaseType newValue)
 		{
-			((IHasCookie)newValue).Cookie = ((IHasCookie)oldValue).Cookie;
-			DecreaseKey(((IHasCookie)oldValue).Cookie, newValue);
+			((IHasCookie<FibonacciWrapper<BaseType>>)newValue).Cookie = ((IHasCookie<FibonacciWrapper<BaseType>>)oldValue).Cookie;
+			DecreaseKey(((IHasCookie<FibonacciWrapper<BaseType>>)oldValue).Cookie, newValue);
 		}
 
 		#endregion
