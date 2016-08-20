@@ -4,7 +4,7 @@ namespace Priority_Queue
 {
 	internal class FibonacciWrapper<BaseType>
     {
-		public BaseType Attr { get; set; }
+		public BaseType Value { get; set; }
 		public FibonacciWrapper<BaseType> FirstChild { get; set; }
 		public FibonacciWrapper<BaseType> Parent { get; set; }
 		public FibonacciWrapper<BaseType> LeftSibling { get; set; }
@@ -14,9 +14,9 @@ namespace Priority_Queue
 		private readonly Func<BaseType, BaseType, int> _compare;
 		internal bool InfinitelyNegative { get; set; }
 
-		public FibonacciWrapper(BaseType attr, Func<BaseType, BaseType, int> compare = null)
+		public FibonacciWrapper(BaseType value, Func<BaseType, BaseType, int> compare = null)
 		{
-			Attr = attr;
+			Value = value;
 			Degree = 0;
 			FirstChild = null;
 			Marked = false;
@@ -41,11 +41,11 @@ namespace Priority_Queue
 			}
 			if (_compare != null)
 			{
-				return _compare(Attr, otherWrapper.Attr);
+				return _compare(Value, otherWrapper.Value);
 			}
 
-			var cmpThis = Attr as IComparable;
-			var cmpOther = otherWrapper.Attr as IComparable;
+			var cmpThis = Value as IComparable;
+			var cmpOther = otherWrapper.Value as IComparable;
 			if (cmpThis == null || cmpOther == null)
 			{
 				throw new InvalidOperationException("No comparison function and Attrs are not IComparable");
@@ -55,7 +55,7 @@ namespace Priority_Queue
 
 		public override string ToString()
 		{
-			return "[" + Attr.ToString() + "]";
+			return "[" + Value.ToString() + "]";
 		}
 
 	    public int Index { get; set; }

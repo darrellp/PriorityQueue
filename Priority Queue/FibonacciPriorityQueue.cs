@@ -265,12 +265,12 @@ namespace Priority_Queue
 		///  Insert a value into the priority queue of type BaseType.
 		/// </summary>
 		/// <remarks>	Darrellp, 2/17/2011.	</remarks>
-		/// <param name="attr">Value to insert.</param>
+		/// <param name="value">Value to insert.</param>
 		/// <returns>Cookie to use to reference the object later</returns>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		public virtual Object Add(BaseType attr)
+		public virtual Object Add(BaseType value)
 		{
-			var wrapper = new FibonacciWrapper<BaseType>(attr, _compare);
+			var wrapper = new FibonacciWrapper<BaseType>(value, _compare);
 			AddWrapper(wrapper);
 			return wrapper;
 		}
@@ -334,7 +334,7 @@ namespace Priority_Queue
 				Consolidate();
 			}
 			Count--;
-			return ret == null? default(BaseType) : ret.Attr;
+			return ret == null? default(BaseType) : ret.Value;
 		}
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -364,7 +364,7 @@ namespace Priority_Queue
         public BaseType Peek(out bool fNoMin)
 		{
 			fNoMin = _min == null;
-			return fNoMin ? default(BaseType) : _min.Attr;
+			return fNoMin ? default(BaseType) : _min.Value;
 		}
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -424,16 +424,16 @@ namespace Priority_Queue
 			{
 				throw new ArgumentException("DecreaseKey recieved invalid cookie");
 			}
-			var attrThis = element.Attr;
+			var valueThis = element.Value;
 			int cmp;
 
 			if (_compare != null)
 			{
-				cmp = _compare(attrThis, newValue);
+				cmp = _compare(valueThis, newValue);
 			}
 			else
 			{
-				var icmp = element.Attr as IComparable;
+				var icmp = element.Value as IComparable;
 
 				if (icmp == null)
 				{
@@ -449,7 +449,7 @@ namespace Priority_Queue
 			{
 				throw new ArgumentException("Key value passed to DecreaseKey greater than current value");
 			}
-			element.Attr = newValue;
+			element.Value = newValue;
 			PlaceElement(element);
 		}
 
@@ -491,7 +491,7 @@ namespace Priority_Queue
 					break;
 				}
 				cur = returns.Pop();
-				yield return cur.Attr;
+				yield return cur.Value;
 				cur = cur.FirstChild;
 			}
 		}
