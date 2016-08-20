@@ -7,9 +7,9 @@ namespace Priority_Queue
     /// main difference is that IHasCookie isn't comparable and it stores an object rather than
     /// an integer.  It's used in our typed objects to store the properly typed 
     /// </summary>
-	internal interface IHasCookie<T>
+	internal interface IHasCookie
 	{
-        T Cookie { get; set; }
+        IBinaryQueueDeletionElement Cookie { get; set; }
 	}
 
     /// <summary>
@@ -40,41 +40,41 @@ namespace Priority_Queue
     /// The proper thing to do here is just
     ///		Assert.AreEqual(10, (int)fpq.Pop());
     /// </remarks>
-    /// <typeparam name="BaseType">Type of values being stored</typeparam>
-    public class Pqt<BaseType, CookieType> : IComparable, IHasCookie<CookieType> where BaseType : IComparable
+    /// <typeparam name="T">Type of values being stored</typeparam>
+    public class Pqt<T> : IComparable, IHasCookie where T : IComparable
 	{
-		public CookieType Cookie { get; set; }
-		internal BaseType Value { get; set; }
+		public IBinaryQueueDeletionElement Cookie { get; set; }
+		protected T Value { get; set; }
 
-        internal Pqt()
+		protected Pqt()
 		{
-			Value = default(BaseType);
+			Value = default(T);
 		}
 
-        protected Pqt(BaseType value)
+		protected Pqt(T value)
 		{
 			Value = value;
 		}
 
-		public Pqt(Pqt<BaseType, CookieType> oldValue)
+		public Pqt(Pqt<T> oldValue)
 		{
 			Value = oldValue.Value;
 			Cookie = oldValue.Cookie;
 		}
 
-		public static implicit operator Pqt<BaseType, CookieType>(BaseType value)
+		public static implicit operator Pqt<T>(T value)
 		{
-			return new Pqt<BaseType, CookieType>(value);
+			return new Pqt<T>(value);
 		}
 
-		public static implicit operator BaseType(Pqt<BaseType, CookieType> value)
+		public static implicit operator T(Pqt<T> value)
 		{
 			return value.Value;
 		}
 
 		public int CompareTo(object obj)
 		{
-			var other = obj as Pqt<BaseType, CookieType>;
+			var other = obj as Pqt<T>;
 			if (other == null)
 			{
 				throw new ArgumentException("Non-FpqInt compared to FpqInt");
@@ -93,38 +93,4 @@ namespace Priority_Queue
 			return Value.GetHashCode();
 		}
 	}
-
-    public class PqtB<BaseType> : Pqt<BaseType, IBinaryQueueDeletionElement> where BaseType : IComparable
-    {
-        public PqtB(Pqt<BaseType, IBinaryQueueDeletionElement> value) : base(value)
-        {
-        }
-
-        public static implicit operator PqtB<BaseType>(BaseType value)
-        {
-            return new PqtB<BaseType>(value);
-        }
-
-        public static implicit operator BaseType(PqtB<BaseType> value)
-        {
-            return value.Value;
-        }
-    }
-
-    public class PqtF<BaseType> : Pqt<BaseType, FibonacciWrapper<BaseType>> where BaseType : IComparable
-    {
-        public PqtF(Pqt<BaseType, FibonacciWrapper<BaseType>> value) : base(value)
-        {
-        }
-
-        public static implicit operator PqtF<BaseType>(BaseType value)
-        {
-            return new PqtF<BaseType>(value);
-        }
-
-        public static implicit operator BaseType(PqtF<BaseType> value)
-        {
-            return value.Value;
-        }
-    }
 }

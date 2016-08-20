@@ -2,7 +2,7 @@
 
 namespace Priority_Queue
 {
-    public class FibonacciWrapper<BaseType> : IBinaryQueueDeletionElement
+	internal class FibonacciWrapper<BaseType> : IBinaryQueueDeletionElement
     {
 		public BaseType Attr { get; set; }
 		public FibonacciWrapper<BaseType> FirstChild { get; set; }
