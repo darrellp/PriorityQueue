@@ -26,6 +26,10 @@ namespace Priority_Queue
 		{
 			Count = 0;
 			_compare = compare;
+		    if (compare == null && !typeof(IComparable).IsAssignableFrom(typeof(BaseType)))
+		    {
+		        throw new ArgumentException("Didn't pass in an IComparable and didn't supply a comparer in Fibonacci Priority Queue ctor");
+		    }
 		}
 		#endregion
 
