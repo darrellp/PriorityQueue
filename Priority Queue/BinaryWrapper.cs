@@ -20,6 +20,11 @@ namespace Priority_Queue
             return value.Value;
         }
 
+        public static implicit operator BinaryWrapper<BaseType>(BaseType value)
+        {
+            return new BinaryWrapper<BaseType>(value);
+        }
+
         public int CompareTo(object obj)
 		{
 			var otherWrapper = obj as BinaryWrapper<BaseType>;
