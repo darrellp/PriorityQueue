@@ -365,7 +365,7 @@ namespace Priority_Queue
         /// <returns>Smallest element in queue or default(BaseType) if no smallest element.</returns>
         /// <exception cref="System.IndexOutOfRangeException">Peeking at an empty priority queue</exception>
         ////////////////////////////////////////////////////////////////////////////////////////////////////
-        public FibonacciWrapper<BaseType> Peek(out bool fNoMin)
+        public FibonacciWrapper<BaseType> PeekWrapper(out bool fNoMin)
 		{
 			fNoMin = _min == null;
 			return fNoMin ? null : _min;
@@ -378,23 +378,51 @@ namespace Priority_Queue
         /// <remarks> This is just a convenience routine  - Darrellp - 6/1/14	</remarks>
         /// <returns>Smallest element in queue or default(BaseType) if no smallest element.</returns>
         ////////////////////////////////////////////////////////////////////////////////////////////////////
-        public FibonacciWrapper<BaseType> Peek()
+        public FibonacciWrapper<BaseType> PeekWrapper()
 		{
 			bool fNoMin;
-			return Peek(out fNoMin);
+			return PeekWrapper(out fNoMin);
 		}
 
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>
-		///  Places an element whose value has changed.
-		/// </summary>
-		/// <remarks>
-		///  This is the guts of DecreaseKey but we use it for Delete also.
-		///		Darrellp - 6/3/14
-		/// </remarks>
-		/// <param name="element">The element.</param>
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		private void PlaceElement(FibonacciWrapper<BaseType> element)
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        ///  Peeks at the min element without deleting it.
+        /// </summary>
+        /// <remarks>	Darrellp - 6/1/14	</remarks>
+        /// <param name="fNoMin">No minimum if set to <c>true</c>.</param>
+        /// <returns>Smallest element in queue or default(BaseType) if no smallest element.</returns>
+        /// <exception cref="System.IndexOutOfRangeException">Peeking at an empty priority queue</exception>
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        public BaseType Peek(out bool fNoMin)
+        {
+            fNoMin = _min == null;
+            return fNoMin ? null : _min;
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        ///  Peeks at the min element without deleting it.
+        /// </summary>
+        /// <remarks> This is just a convenience routine  - Darrellp - 6/1/14	</remarks>
+        /// <returns>Smallest element in queue or default(BaseType) if no smallest element.</returns>
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        public BaseType Peek()
+        {
+            bool fNoMin;
+            return PeekWrapper(out fNoMin);
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        ///  Places an element whose value has changed.
+        /// </summary>
+        /// <remarks>
+        ///  This is the guts of DecreaseKey but we use it for Delete also.
+        ///		Darrellp - 6/3/14
+        /// </remarks>
+        /// <param name="element">The element.</param>
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        private void PlaceElement(FibonacciWrapper<BaseType> element)
 		{
 			var parent = element.Parent;
 			if (parent != null && parent.CompareTo(element) > 0)
@@ -482,7 +510,7 @@ namespace Priority_Queue
 		#region IEnumerable members
 		protected IEnumerator<BaseType> GetEnumerator()
 		{
-			var returns = new Stack<FibonacciWrapper<BaseType>>();
+			var returns = new Stack<BaseType>();
 			var cur = _min;
 
 			while (true)

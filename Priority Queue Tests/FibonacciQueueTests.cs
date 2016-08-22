@@ -19,10 +19,10 @@ namespace Priority_Queue_Tests
 		public void TestPeek()
 		{
 			var fpq = new FibonacciPriorityQueue<int>();
-			var val = fpq.Peek();
+			var val = fpq.PeekWrapper();
 			Assert.AreEqual(null, val);
 			bool fNoMin;
-			val = fpq.Peek(out fNoMin);
+			val = fpq.PeekWrapper(out fNoMin);
 			Assert.IsTrue(fNoMin);
 			Assert.AreEqual(null, val);
 		}
@@ -32,13 +32,13 @@ namespace Priority_Queue_Tests
         {
             bool fNoMin;
             var fpq = new FibonacciPriorityQueue<int> { 13 };
-            int val = fpq.Peek(out fNoMin);
+            int val = fpq.PeekWrapper(out fNoMin);
             Assert.IsFalse(fNoMin);
             Assert.AreEqual(13, val);
             fpq.Add(10);
-            Assert.AreEqual(10, (int)fpq.Peek());
+            Assert.AreEqual(10, (int)fpq.PeekWrapper());
             fpq.Add(11);
-            Assert.AreEqual(10, (int)fpq.Peek());
+            Assert.AreEqual(10, (int)fpq.PeekWrapper());
             Assert.AreEqual(10, fpq.Pop());
             Assert.AreEqual(11, fpq.Pop());
             Assert.AreEqual(13, fpq.Pop());
@@ -54,7 +54,25 @@ namespace Priority_Queue_Tests
             Assert.IsTrue(fNoMin);
         }
 
-        [TestMethod]
+	    [TestMethod]
+	    public void ShowBug()
+	    {
+	        var fpq = new FibonacciPriorityQueue<int>();
+	        var added = fpq.Add(10);
+	        int val = fpq.Peek();
+
+            // Added gets implicitly coerced to an int - namely 10 - so the equality succeeds
+            Assert.IsTrue(added == 10);
+            
+            // val is an int equal to 10 so no coercion and the equality succeeds
+            Assert.IsTrue(val == 10);
+
+            // val is an integer so does not equal the added wrapper.  Implicit conversion isn't
+            // done here and the equality fails
+	        Assert.AreNotEqual(added, val);
+	    }
+
+	    [TestMethod]
         public void TestRandomOps()
         {
             var rnd = new Random(110456);
@@ -109,7 +127,7 @@ namespace Priority_Queue_Tests
                     // Peek will give us back a wrapper because the item remains in the priority queue
                     // Pop gives us back a BaseType value because the item is no longer in the queue so
                     // we have to use peek here to give us back the proper value to remove from vals.
-                    var valToBePopped = fpq.Peek();
+                    var valToBePopped = fpq.PeekWrapper();
                     Assert.IsTrue(vals.Contains(valToBePopped));
                     vals.Remove(valToBePopped);
                     fpq.Pop();
@@ -117,14 +135,14 @@ namespace Priority_Queue_Tests
             }
             Assert.AreEqual(vals.Count, fpq.Count);
             Assert.AreEqual(vals.Count, fpq.ToList().Count);
-            val = fpq.Peek();
+            val = fpq.PeekWrapper();
             Assert.IsTrue(vals.Contains(val));
             vals.Remove(val);
             fpq.Pop();
             var count = vals.Count;
             for (var i = 0; i < count; i++)
             {
-                var next = fpq.Peek();
+                var next = fpq.PeekWrapper();
                 fpq.Pop();
                 Assert.IsTrue(next > val);
                 Assert.IsTrue(vals.Contains(next));
@@ -145,11 +163,11 @@ namespace Priority_Queue_Tests
 			fpq.Add(600);
 			fpq.Add(10);
 			Assert.AreEqual(10, fpq.Pop());
-			Assert.AreEqual(100, (int)fpq.Peek());
+			Assert.AreEqual(100, (int)fpq.PeekWrapper());
 			fpq.DecreaseKey(i1, 99);
-			Assert.AreEqual(99, (int)fpq.Peek());
+			Assert.AreEqual(99, (int)fpq.PeekWrapper());
 			fpq.DecreaseKey(i2, 98);
-			Assert.AreEqual(98, (int)fpq.Peek());
+			Assert.AreEqual(98, (int)fpq.PeekWrapper());
 		}
 	}
 }
