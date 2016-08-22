@@ -510,7 +510,7 @@ namespace Priority_Queue
 		#region IEnumerable members
 		protected IEnumerator<BaseType> GetEnumerator()
 		{
-			var returns = new Stack<BaseType>();
+			var returns = new Stack<FibonacciWrapper<BaseType>>();
 			var cur = _min;
 
 			while (true)
