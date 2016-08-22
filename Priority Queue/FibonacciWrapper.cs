@@ -2,6 +2,7 @@
 
 namespace Priority_Queue
 {
+    // ReSharper disable once InconsistentNaming
     public class FibonacciWrapper<BaseType>
     {
 		public BaseType Value { get; set; }
@@ -39,6 +40,11 @@ namespace Priority_Queue
         public int CompareTo(object obj)
 		{
 			var otherWrapper = obj as FibonacciWrapper<BaseType>;
+
+            if (otherWrapper == null)
+            {
+                throw new ArgumentException("Comparing FibonacciWrapper with incompatible type");
+            }
 
 			// Infinitely negative values are always smaller than other values
 			if (InfinitelyNegative)

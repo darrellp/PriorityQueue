@@ -11,7 +11,7 @@ namespace Priority_Queue
 	{
 		#region Private Variables
 		private FibonacciWrapper<BaseType> _min;
-		private Func<BaseType, BaseType, int> _compare;
+		private readonly Func<BaseType, BaseType, int> _compare;
 		#endregion
 
 		#region Properties

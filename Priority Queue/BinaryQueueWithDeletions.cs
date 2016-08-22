@@ -16,6 +16,7 @@ namespace Priority_Queue
     /// </remarks>
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    // ReSharper disable once InconsistentNaming
     public class BinaryQueueWithDeletions<BaseType> : BinaryPriorityQueue<BaseType> where BaseType : class, IComparable, ILocatable
     {
         #region Public overrides

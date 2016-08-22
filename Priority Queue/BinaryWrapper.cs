@@ -2,7 +2,8 @@
 
 namespace Priority_Queue
 {
-	public class BinaryWrapper<BaseType> : IComparable, ILocatable
+    // ReSharper disable once InconsistentNaming
+	public class BinaryWrapper<BaseType> : ILocatable
 	{
 		public BaseType Value { get; set; }
 		public int Index { get; set; }

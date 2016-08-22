@@ -2,6 +2,7 @@
 
 namespace Priority_Queue
 {
+    // ReSharper disable once InconsistentNaming
     public class BinaryQueueDithDeletionsTyped<BaseType> : BinaryQueueWithDeletions<BinaryWrapper<BaseType>> where BaseType : IComparable
     {
         #region Public overrides

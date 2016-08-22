@@ -12,6 +12,7 @@ namespace Priority_Queue
 	/// <remarks>	Darrellp, 2/17/2011. </remarks>
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	// ReSharper disable once InconsistentNaming
 	public class BinaryPriorityQueue<BaseType> : IEnumerable<BaseType>
 	{
 		#region Private Variables
