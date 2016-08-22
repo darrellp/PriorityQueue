@@ -42,14 +42,12 @@
     <Compile Include="BinaryPriorityQueue.cs" />
     <Compile Include="BinaryQueueWithDeletions.cs" />
     <Compile Include="BinaryWrapper.cs" />
-    <Compile Include="FibonacciTypedQueue.cs" />
     <Compile Include="FibonacciWrapper.cs" />
     <Compile Include="FibonacciPriorityQueue.cs" />
     <Compile Include="FibonacciValidation.cs" />
     <Compile Include="BinaryQueueDithDeletionsTyped.cs" />
     <Compile Include="ILocatable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Pqt.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

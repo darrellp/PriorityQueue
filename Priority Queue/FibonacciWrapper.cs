@@ -2,7 +2,7 @@
 
 namespace Priority_Queue
 {
-	internal class FibonacciWrapper<BaseType>
+    public class FibonacciWrapper<BaseType>
     {
 		public BaseType Value { get; set; }
 		public FibonacciWrapper<BaseType> FirstChild { get; set; }
@@ -26,7 +26,17 @@ namespace Priority_Queue
 			_compare = compare;
 		}
 
-		public int CompareTo(object obj)
+        public static implicit operator FibonacciWrapper<BaseType>(BaseType value)
+        {
+            return new FibonacciWrapper<BaseType>(value);
+        }
+
+        public static implicit operator BaseType(FibonacciWrapper<BaseType> value)
+        {
+            return value.Value;
+        }
+
+        public int CompareTo(object obj)
 		{
 			var otherWrapper = obj as FibonacciWrapper<BaseType>;
 

@@ -20,18 +20,18 @@ namespace Priority_Queue_Tests
 		{
 			var fpq = new FibonacciPriorityQueue<int>();
 			var val = fpq.Peek();
-			Assert.AreEqual(default(int), val);
+			Assert.AreEqual(null, val);
 			bool fNoMin;
 			val = fpq.Peek(out fNoMin);
 			Assert.IsTrue(fNoMin);
-			Assert.AreEqual(default(int), val);
+			Assert.AreEqual(null, val);
 		}
 
         [TestMethod]
         public void TestExtractMinTyped()
         {
             bool fNoMin;
-            var fpq = new FibonacciTypedQueue<int> { 13 };
+            var fpq = new FibonacciPriorityQueue<int> { 13 };
             int val = fpq.Peek(out fNoMin);
             Assert.IsFalse(fNoMin);
             Assert.AreEqual(13, val);
@@ -39,18 +39,18 @@ namespace Priority_Queue_Tests
             Assert.AreEqual(10, (int)fpq.Peek());
             fpq.Add(11);
             Assert.AreEqual(10, (int)fpq.Peek());
-            Assert.AreEqual(10, (int)fpq.Pop());
-            Assert.AreEqual(11, (int)fpq.Pop());
-            Assert.AreEqual(13, (int)fpq.Pop());
-            Assert.AreEqual(null, fpq.Pop(out fNoMin));
+            Assert.AreEqual(10, fpq.Pop());
+            Assert.AreEqual(11, fpq.Pop());
+            Assert.AreEqual(13, fpq.Pop());
+            Assert.AreEqual(0, fpq.Pop(out fNoMin));
             Assert.IsTrue(fNoMin);
             fpq.Add(10);
             fpq.Add(10);
             fpq.Add(10);
-            Assert.AreEqual(10, (int)fpq.Pop());
-            Assert.AreEqual(10, (int)fpq.Pop());
-            Assert.AreEqual(10, (int)fpq.Pop());
-            Assert.AreEqual(null, fpq.Pop(out fNoMin));
+            Assert.AreEqual(10, fpq.Pop());
+            Assert.AreEqual(10, fpq.Pop());
+            Assert.AreEqual(10, fpq.Pop());
+            Assert.AreEqual(0, fpq.Pop(out fNoMin));
             Assert.IsTrue(fNoMin);
         }
 
@@ -58,14 +58,14 @@ namespace Priority_Queue_Tests
         public void TestRandomOps()
         {
             var rnd = new Random(110456);
-            var fpq = new FibonacciTypedQueue<int>();
+            var fpq = new FibonacciPriorityQueue<int>();
 
             // We have to make these Pqt<int> because they're the keys we'll be using
             // to modify/delete elements from the queue.
-            var vals = new HashSet<Pqt<int>>();
+            var vals = new HashSet<FibonacciWrapper<int>>();
 
             // We have to make this Pqt<int> because it will be used as a key
-            Pqt<int> val;
+            FibonacciWrapper<int> val;
 
             for (var i = 0; i < 1000; i++)
             {
@@ -90,34 +90,42 @@ namespace Priority_Queue_Tests
                 else if (rnd.Next(100) < 20)
                 {
                     val = vals.First();
-                    // We have to make newval a Pqt<int> to preserve it's key when we add it
+                    // We have to make newval a FibonacciWrapper<int> to preserve it's key when we add it
                     // to vals.  If it's just an int then the add to vals below will coerce
                     // it's int value to a Pqt<int> just fine but will have a null in the
                     // cookie.
-                    Pqt<int> newval = rnd.Next(val);
+                    //FibonacciWrapper<int> newval = rnd.Next(val);
                     // DecreaseKeyTyped will transfer cookie value from the old to the
                     // new FpqInt.
+                    int newval = rnd.Next(val);
                     fpq.DecreaseKey(val, newval);
-                    vals.Remove(val);
-                    vals.Add(newval);
+
+                    //vals.Remove(val);
+                    //vals.Add(newval);
                     Assert.IsTrue(fpq.Validate());
                 }
                 else
                 {
-                    val = fpq.Pop();
-                    Assert.IsTrue(vals.Contains(val));
-                    vals.Remove(val);
+                    // Peek will give us back a wrapper because the item remains in the priority queue
+                    // Pop gives us back a BaseType value because the item is no longer in the queue so
+                    // we have to use peek here to give us back the proper value to remove from vals.
+                    var valToBePopped = fpq.Peek();
+                    Assert.IsTrue(vals.Contains(valToBePopped));
+                    vals.Remove(valToBePopped);
+                    fpq.Pop();
                 }
             }
             Assert.AreEqual(vals.Count, fpq.Count);
             Assert.AreEqual(vals.Count, fpq.ToList().Count);
-            val = fpq.Pop();
+            val = fpq.Peek();
             Assert.IsTrue(vals.Contains(val));
             vals.Remove(val);
+            fpq.Pop();
             var count = vals.Count;
             for (var i = 0; i < count; i++)
             {
-                var next = fpq.Pop();
+                var next = fpq.Peek();
+                fpq.Pop();
                 Assert.IsTrue(next > val);
                 Assert.IsTrue(vals.Contains(next));
                 vals.Remove(next);
@@ -128,7 +136,7 @@ namespace Priority_Queue_Tests
         [TestMethod]
 		public void TestDecreaseKey()
 		{
-			var fpq = new FibonacciTypedQueue<int>();
+			var fpq = new FibonacciPriorityQueue<int>();
 			var i1 = fpq.Add(100);
 			var i2 = fpq.Add(300);
 			fpq.Add(400);
@@ -136,7 +144,7 @@ namespace Priority_Queue_Tests
 			fpq.Add(500);
 			fpq.Add(600);
 			fpq.Add(10);
-			Assert.AreEqual(10, (int)fpq.Pop());
+			Assert.AreEqual(10, fpq.Pop());
 			Assert.AreEqual(100, (int)fpq.Peek());
 			fpq.DecreaseKey(i1, 99);
 			Assert.AreEqual(99, (int)fpq.Peek());

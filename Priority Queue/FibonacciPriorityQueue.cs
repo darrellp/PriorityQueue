@@ -272,7 +272,7 @@ namespace Priority_Queue
 		/// <param name="value">Value to insert.</param>
 		/// <returns>Cookie to use to reference the object later</returns>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		public virtual Object Add(BaseType value)
+		public virtual FibonacciWrapper<BaseType> Add(BaseType value)
 		{
 			var wrapper = new FibonacciWrapper<BaseType>(value, _compare);
 			AddWrapper(wrapper);
@@ -365,10 +365,10 @@ namespace Priority_Queue
         /// <returns>Smallest element in queue or default(BaseType) if no smallest element.</returns>
         /// <exception cref="System.IndexOutOfRangeException">Peeking at an empty priority queue</exception>
         ////////////////////////////////////////////////////////////////////////////////////////////////////
-        public BaseType Peek(out bool fNoMin)
+        public FibonacciWrapper<BaseType> Peek(out bool fNoMin)
 		{
 			fNoMin = _min == null;
-			return fNoMin ? default(BaseType) : _min.Value;
+			return fNoMin ? null : _min;
 		}
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -378,7 +378,7 @@ namespace Priority_Queue
         /// <remarks> This is just a convenience routine  - Darrellp - 6/1/14	</remarks>
         /// <returns>Smallest element in queue or default(BaseType) if no smallest element.</returns>
         ////////////////////////////////////////////////////////////////////////////////////////////////////
-        public BaseType Peek()
+        public FibonacciWrapper<BaseType> Peek()
 		{
 			bool fNoMin;
 			return Peek(out fNoMin);
@@ -474,7 +474,8 @@ namespace Priority_Queue
 			}
 			element.InfinitelyNegative = true;
 			PlaceElement(element);
-			Pop();
+            ThrowBadFpq(this);
+            Pop();
 		}
 		#endregion
 

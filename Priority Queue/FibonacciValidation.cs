@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Priority_Queue
 {
+    // ReSharper disable once InconsistentNaming
 	public static class FibonacciValidation<BaseType>
 	{
 		// ReSharper disable once StaticFieldInGenericType
