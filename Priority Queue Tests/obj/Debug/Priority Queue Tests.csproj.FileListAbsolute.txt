@@ -6,3 +6,12 @@ C:\Users\Darrell\Documents\Visual Studio 2015\Projects\Github\PriorityQueue\Prio
 C:\Users\Darrell\Documents\Visual Studio 2015\Projects\Github\PriorityQueue\Priority Queue Tests\obj\Debug\Priority Queue Tests.csprojResolveAssemblyReference.cache
 C:\Users\Darrell\Documents\Visual Studio 2015\Projects\Github\PriorityQueue\Priority Queue Tests\obj\Debug\Priority Queue Tests.dll
 C:\Users\Darrell\Documents\Visual Studio 2015\Projects\Github\PriorityQueue\Priority Queue Tests\obj\Debug\Priority Queue Tests.pdb
+D:\OneDrive\Documents\My Projects\PriorityQueue\Priority Queue Tests\bin\Debug\Priority Queue Tests.dll
+D:\OneDrive\Documents\My Projects\PriorityQueue\Priority Queue Tests\bin\Debug\Priority Queue Tests.pdb
+D:\OneDrive\Documents\My Projects\PriorityQueue\Priority Queue Tests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+D:\OneDrive\Documents\My Projects\PriorityQueue\Priority Queue Tests\bin\Debug\Priority Queue.dll
+D:\OneDrive\Documents\My Projects\PriorityQueue\Priority Queue Tests\bin\Debug\Priority Queue.pdb
+D:\OneDrive\Documents\My Projects\PriorityQueue\Priority Queue Tests\obj\Debug\Priority Queue Tests.csprojResolveAssemblyReference.cache
+D:\OneDrive\Documents\My Projects\PriorityQueue\Priority Queue Tests\obj\Debug\Priority Queue Tests.csproj.CoreCompileInputs.cache
+D:\OneDrive\Documents\My Projects\PriorityQueue\Priority Queue Tests\obj\Debug\Priority Queue Tests.dll
+D:\OneDrive\Documents\My Projects\PriorityQueue\Priority Queue Tests\obj\Debug\Priority Queue Tests.pdb

@@ -3,3 +3,9 @@ C:\Users\Darrell\Documents\Visual Studio 2015\Projects\Github\PriorityQueue\Prio
 C:\Users\Darrell\Documents\Visual Studio 2015\Projects\Github\PriorityQueue\Priority Queue\obj\Debug\Priority Queue.csprojResolveAssemblyReference.cache
 C:\Users\Darrell\Documents\Visual Studio 2015\Projects\Github\PriorityQueue\Priority Queue\obj\Debug\Priority Queue.dll
 C:\Users\Darrell\Documents\Visual Studio 2015\Projects\Github\PriorityQueue\Priority Queue\obj\Debug\Priority Queue.pdb
+D:\OneDrive\Documents\My Projects\PriorityQueue\Priority Queue\bin\Debug\Priority Queue.dll
+D:\OneDrive\Documents\My Projects\PriorityQueue\Priority Queue\bin\Debug\Priority Queue.pdb
+D:\OneDrive\Documents\My Projects\PriorityQueue\Priority Queue\obj\Debug\Priority Queue.csprojResolveAssemblyReference.cache
+D:\OneDrive\Documents\My Projects\PriorityQueue\Priority Queue\obj\Debug\Priority Queue.csproj.CoreCompileInputs.cache
+D:\OneDrive\Documents\My Projects\PriorityQueue\Priority Queue\obj\Debug\Priority Queue.dll
+D:\OneDrive\Documents\My Projects\PriorityQueue\Priority Queue\obj\Debug\Priority Queue.pdb
